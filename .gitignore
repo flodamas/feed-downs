@@ -1,0 +1,10 @@
+*.so
+*.dylib
+*.dll
+*.d
+*.pcm
+*.xml
+*.root
+*.pdf
+*.png
+.DS_Store
