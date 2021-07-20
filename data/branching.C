@@ -34,8 +34,8 @@ Float_t syst3Sto2Stwophotons = 0.7;
 Float_t br3Sto1Spipluspiminus = 4.37;
 Float_t syst3Sto1Spipluspiminus = 0.08;
 
-Float_t br3Sto2Stwopizero = 2.20;
-Float_t syst3Sto2Stwopizero = 0.13;
+Float_t br3Sto1Stwopizero = 2.20;
+Float_t syst3Sto1Stwopizero = 0.13;
 
 // to chi_b(2P)
 Float_t br3Sto2P_Jequal2 = 13.1;
@@ -63,8 +63,13 @@ Float_t syst3Sto1P_Jequal0 = .04;
 Float_t br2Sto1Spipluspiminus = 17.85;
 Float_t syst2Sto1Spipluspiminus = 0.26;
 
-Float_t br2Sto2Stwopizero = 8.6;
-Float_t syst2Sto2Stwopizero = 0.4;
+Float_t br2Sto1Stwopizero = 8.6;
+Float_t syst2Sto1Stwopizero = 0.4;
+
+Float_t br2Sto1Seta = 2.9e-2;
+Float_t syst2Sto1Seta = 0.4e-2;
+
+Float_t br2Sto1Sanything = br2Sto1Spipluspiminus + br2Sto1Stwopizero + br2Sto1Seta;
 
 // to chi_b(1P)
 Float_t br2Sto1P_Jequal2 = 6.9;
@@ -78,7 +83,10 @@ Float_t syst2Sto1P_Jequal0 = 0.4;
 
 /// Chi_b(3P) radiative decays observed but no branching franctions available in the PDG
 
-// use feed-down fractions measured at high pt by LHCb? (7 and 8 TeV)
+/*
+- use feed-down fractions measured at high pt by LHCb? (7 and 8 TeV)
+- predicted branching ratios? e.g. table 2 in https://arxiv.org/pdf/1410.8537.pdf
+*/
 
 /// Chi_b(2P) radiative decays (branching fractions in %)
 

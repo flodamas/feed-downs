@@ -3,6 +3,7 @@
 void rootlogon() {
 	TStyle* tdrStyle = new TStyle("tdrStyle", "Style for P-TDR");
 
+	tdrStyle->SetTextFont(42);
 	// For the canvas:
 	tdrStyle->SetCanvasBorderMode(0);
 	tdrStyle->SetCanvasColor(kWhite);
@@ -55,7 +56,7 @@ void rootlogon() {
 	// For the legend
 	tdrStyle->SetLegendBorderSize(0);
 	tdrStyle->SetLegendFont(42);
-	tdrStyle->SetLegendTextSize(.05);
+	tdrStyle->SetLegendTextSize(.055);
 	tdrStyle->SetFillStyle(0);
 
 	// For the date:
@@ -81,8 +82,8 @@ void rootlogon() {
 	// Margins:
 	tdrStyle->SetPadTopMargin(0.02);
 	tdrStyle->SetPadBottomMargin(0.15);
-	tdrStyle->SetPadLeftMargin(0.13);
-	tdrStyle->SetPadRightMargin(0.02);
+	tdrStyle->SetPadLeftMargin(0.14);
+	tdrStyle->SetPadRightMargin(0.025);
 
 	// For the Global title:
 
@@ -109,7 +110,7 @@ void rootlogon() {
 	// tdrStyle->SetTitleXSize(Float_t size = 0.02); // Another way to set the
 	// size? tdrStyle->SetTitleYSize(Float_t size = 0.02);
 	tdrStyle->SetTitleXOffset(1.05);
-	tdrStyle->SetTitleYOffset(1.);
+	tdrStyle->SetTitleYOffset(1.2);
 	// tdrStyle->SetTitleOffset(1.1, "Y"); // Another way to set the Offset
 
 	// For the axis labels:
