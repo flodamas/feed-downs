@@ -74,7 +74,7 @@ void rapidityRatios() {
 
 	auto* statGraph_mid2Sto1S = myStatGraph(title, nPoints_mid2Sover1S, rapidityBinning_2Sover1S_cms7TeV, rapidDiff_2Sover1S_cms7TeV, statRapidDiff_2Sover1S_cms7TeV, color2Sto1S + 1, markerCMS);
 
-	// Y(2S)-to-Y(1S)
+	// Y(3S)-to-Y(1S)
 
 	const Int_t nPoints_mid3Sover1S = sizeof(rapidityBinning_3Sover1S_cms7TeV) / sizeof(Float_t) - 1;
 

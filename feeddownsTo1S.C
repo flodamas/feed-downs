@@ -25,7 +25,7 @@ void feeddownsTo1S(Bool_t withLogYaxis = kFALSE) {
 	const char* title1S =
 	  ";#it{p}_{T}^{#varUpsilon(1S)} (GeV/#it{c});Feed-down fractions to #varUpsilon(1S) (in %)";
 
-	const Int_t nPoints2Sto1S = sizeof(ptDiff_2p5y3p0_2Sto1S) / sizeof(float);
+	const Int_t nPoints2Sto1S = sizeof(ptBinning_2p5y3p0_2Sto1S_lhcb13TeV) / sizeof(float) - 1;
 
 	cout << nPoints2Sto1S << " pt points" << endl;
 
@@ -33,21 +33,21 @@ void feeddownsTo1S(Bool_t withLogYaxis = kFALSE) {
 	Float_t frac3Sto1S[nPoints2Sto1S], error3Sto1S[nPoints2Sto1S];
 
 	for (Int_t i = 0; i < nPoints2Sto1S; i++) {
-		frac2Sto1S[i] = ptDiff_2p5y3p0_2Sto1S[i] * (br1Stomumu / br2Stomumu) * br2Sto1Sanything;
-		error2Sto1S[i] = errorPtDiff_2p5y3p0_2Sto1S[i] * (br1Stomumu / br2Stomumu) * br2Sto1Sanything;
+		frac2Sto1S[i] = ptDiff_2p5y3p0_2Sto1S_lhcb13TeV[i] * (br1Stomumu / br2Stomumu) * br2Sto1Sanything;
+		error2Sto1S[i] = errorPtDiff_2p5y3p0_2Sto1S_lhcb13TeV[i] * (br1Stomumu / br2Stomumu) * br2Sto1Sanything;
 
-		frac3Sto1S[i] = ptDiff_2p5y3p0_3Sto1S[i] * (br1Stomumu / br3Stomumu) * (br3Sto1Spipluspiminus + br3Sto1Stwopizero);
-		error3Sto1S[i] = errorPtDiff_2p5y3p0_3Sto1S[i] * (br1Stomumu / br3Stomumu) * (br3Sto1Spipluspiminus + br3Sto1Stwopizero);
+		frac3Sto1S[i] = ptDiff_2p5y3p0_3Sto1S_lhcb13TeV[i] * (br1Stomumu / br3Stomumu) * (br3Sto1Spipluspiminus + br3Sto1Stwopizero);
+		error3Sto1S[i] = errorPtDiff_2p5y3p0_3Sto1S_lhcb13TeV[i] * (br1Stomumu / br3Stomumu) * (br3Sto1Spipluspiminus + br3Sto1Stwopizero);
 	}
 
-	auto* stat2Sto1Sgraph = myStatGraph(title1S, nPoints2Sto1S, ptBinning_2p5y3p0_2Sto1S, frac2Sto1S, error2Sto1S, color2P, marker2P);
+	auto* stat2Sto1Sgraph = myStatGraph(title1S, nPoints2Sto1S, ptBinning_2p5y3p0_2Sto1S_lhcb13TeV, frac2Sto1S, error2Sto1S, color2P, marker2P);
 
 	stat2Sto1Sgraph->SetMaximum(25);
 	stat2Sto1Sgraph->GetXaxis()->SetLimits(0, 30);
 
 	stat2Sto1Sgraph->Draw("APZ");
 
-	auto* stat3Sto1Sgraph = myStatGraph(title1S, nPoints2Sto1S, ptBinning_2p5y3p0_3Sto1S, frac3Sto1S, error3Sto1S, color3P, marker3P);
+	auto* stat3Sto1Sgraph = myStatGraph(title1S, nPoints2Sto1S, ptBinning_2p5y3p0_3Sto1S_lhcb13TeV, frac3Sto1S, error3Sto1S, color3P, marker3P);
 
 	stat3Sto1Sgraph->Draw("PZ");
 
