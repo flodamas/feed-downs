@@ -12,6 +12,10 @@ const Color_t color2Sto1S = kViolet - 8;
 const Color_t color3Sto1S = kOrange + 1;
 const Color_t color3Sto2S = kTeal + 2;
 
+const Color_t colorATLAS = kGray + 3;
+const Color_t colorCMS = kRed + 1;
+const Color_t colorLHCb = kAzure + 1;
+
 const Int_t markerATLAS = 21;
 const Int_t markerCMS = 20;
 const Int_t markerLHCb = 22;
@@ -57,6 +61,15 @@ TGraphErrors* mySystGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth
 	graph->SetFillColorAlpha(color, .4);
 
 	return graph;
+}
+
+void drawUnityLine(TCanvas* canvas) {
+	canvas->Modified();
+	canvas->Update();
+	TLine* line = new TLine(canvas->GetUxmin(), 1, canvas->GetUxmax(), 1);
+	line->SetLineStyle(2);
+	line->SetLineColor(kBlack);
+	line->Draw("SAME");
 }
 
 void drawHeaderLegend(const char* text, Float_t x = 0.2, Float_t y = 0.9) {

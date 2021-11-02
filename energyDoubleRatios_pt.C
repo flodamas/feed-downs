@@ -101,7 +101,7 @@ void energyDoubleRatios_pt(Bool_t withLogYaxis = kFALSE) {
 
 	auto* statGraph_cms3Sto2S = myStatGraph(title, nPointsCMS, ptBinning_cms13TeV, ptDiff_3Sto2S_cms, stat_3Sto2S_cms, color3Sto2S - 1, markerCMS);
 
-	statGraph_cms3Sto2S->Draw("PZ");
+	//statGraph_cms3Sto2S->Draw("PZ");
 
 	// Y(2S)-to-Y(1S)
 
@@ -127,7 +127,7 @@ void energyDoubleRatios_pt(Bool_t withLogYaxis = kFALSE) {
 	drawHeaderLegend("#varUpsilon(3S) / #varUpsilon(1S)", xUpsi, y3Sto1S);
 
 	drawHeaderLegend("CMS, |#it{y} | < 1.2", xCMS - .1, yHeader);
-	drawLegend(statGraph_cms3Sto2S, " ", xCMS, y3Sto2S, "pl");
+	//drawLegend(statGraph_cms3Sto2S, " ", xCMS, y3Sto2S, "pl");
 	drawLegend(statGraph_cms2Sto1S, " ", xCMS, y2Sto1S, "pl");
 	drawLegend(statGraph_cms3Sto1S, " ", xCMS, y3Sto1S, "pl");
 
@@ -135,6 +135,10 @@ void energyDoubleRatios_pt(Bool_t withLogYaxis = kFALSE) {
 	drawLegend(statGraph_lhcb3Sto2S, " ", xLHCb, y3Sto2S, "pl");
 	drawLegend(statGraph_lhcb2Sto1S, " ", xLHCb, y2Sto1S, "pl");
 	drawLegend(statGraph_lhcb3Sto1S, " ", xLHCb, y3Sto1S, "pl");
+
+	drawUnityLine(canvas);
+
+	gPad->RedrawAxis();
 
 	canvas->SaveAs("figures/pt13to7TeV.png", "RECREATE");
 	//canvas->Close();

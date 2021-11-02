@@ -12,6 +12,20 @@
 
 const Float_t xErrorWidth = 0.1;
 
+TFitResultPtr getLHCbFitResult(TGraphErrors* graphLHCb) {
+	TF1* func = new TF1("pol0", "pol0", 2, 4.5);
+
+	auto fitResult = graphLHCb->Fit(func, "QIEMSN0");
+
+	cout << " chi2 / ndof = " << fitResult->Chi2() << " / " << fitResult->Ndf() << " = " << fitResult->Chi2() / fitResult->Ndf() << endl;
+
+	for (Int_t i = 0; i < func->GetNpar(); i++) {
+		cout << "Parameter " << i << " = " << func->GetParameter(i) << " +/- " << func->GetParError(i) << endl;
+	}
+
+	return fitResult;
+}
+
 TFitResultPtr getFitResult(TGraphErrors* graphCMS, TGraphErrors* graphLHCb) {
 	Int_t nCMSPoints = graphCMS->GetN(), nLHCbPoints = graphLHCb->GetN();
 
@@ -62,29 +76,38 @@ void energyDoubleRatios_rapidity() {
 
 	Float_t rapidDiff_2Sto1S_lhcb[nPoints_lhcb], errorRapidDiff_2Sto1S_lhcb[nPoints_lhcb], rapidDiff_3Sto1S_lhcb[nPoints_lhcb], errorRapidDiff_3Sto1S_lhcb[nPoints_lhcb], rapidDiff_3Sto2S_lhcb[nPoints_lhcb], errorRapidDiff_3Sto2S_lhcb[nPoints_lhcb];
 
+	Float_t binning2Sto1S[nPoints_lhcb + 1], binning3Sto2S[nPoints_lhcb + 1];
+
+	binning2Sto1S[0] = rapidityBinning_lhcb13TeV[0] - .02;
+	binning3Sto2S[0] = rapidityBinning_lhcb13TeV[0] + .02;
+
 	for (Int_t i = 0; i < nPoints_lhcb; i++) {
+		binning2Sto1S[i + 1] = rapidityBinning_lhcb13TeV[i + 1] - .02;
+
 		rapidDiff_2Sto1S_lhcb[i] = rapidDiff_2S_lhcb13to8TeV[i] / rapidDiff_1S_lhcb13to8TeV[i];
 
 		errorRapidDiff_2Sto1S_lhcb[i] = rapidDiff_2Sto1S_lhcb[i] * errorRapidDiff_1S_lhcb13to8TeV[i] / rapidDiff_1S_lhcb13to8TeV[i];
 
-		errorRapidDiff_2Sto1S_lhcb[i] = 0;
+		//errorRapidDiff_2Sto1S_lhcb[i] = 0;
 
 		rapidDiff_3Sto1S_lhcb[i] = rapidDiff_3S_lhcb13to8TeV[i] / rapidDiff_1S_lhcb13to8TeV[i];
 
 		errorRapidDiff_3Sto1S_lhcb[i] = rapidDiff_3Sto1S_lhcb[i] * errorRapidDiff_1S_lhcb13to8TeV[i] / rapidDiff_1S_lhcb13to8TeV[i];
 
-		errorRapidDiff_3Sto1S_lhcb[i] = 0.;
+		//errorRapidDiff_3Sto1S_lhcb[i] = 0.;
+
+		binning3Sto2S[i + 1] = rapidityBinning_lhcb13TeV[i + 1] + .02;
 
 		rapidDiff_3Sto2S_lhcb[i] = rapidDiff_3S_lhcb13to8TeV[i] / rapidDiff_2S_lhcb13to8TeV[i];
 
 		errorRapidDiff_3Sto2S_lhcb[i] = rapidDiff_3Sto2S_lhcb[i] * errorRapidDiff_2S_lhcb13to8TeV[i] / rapidDiff_2S_lhcb13to8TeV[i];
 
-		errorRapidDiff_3Sto2S_lhcb[i] = 0.;
+		//errorRapidDiff_3Sto2S_lhcb[i] = 0.;
 	}
 
 	// Y(2S)-to-Y(1S)
 
-	auto* statGraph_lhcb2Sto1S = myStatGraph(title, nPoints_lhcb, rapidityBinning_lhcb13TeV, rapidDiff_2Sto1S_lhcb, errorRapidDiff_2Sto1S_lhcb, color2Sto1S, markerLHCb);
+	auto* statGraph_lhcb2Sto1S = myStatGraph(title, nPoints_lhcb, binning2Sto1S, rapidDiff_2Sto1S_lhcb, errorRapidDiff_2Sto1S_lhcb, color2Sto1S, markerLHCb);
 
 	// Y(3S)-to-Y(1S)
 
@@ -92,7 +115,7 @@ void energyDoubleRatios_rapidity() {
 
 	// Y(3S)-to-Y(2S)
 
-	auto* statGraph_lhcb3Sto2S = myStatGraph(title, nPoints_lhcb, rapidityBinning_lhcb13TeV, rapidDiff_3Sto2S_lhcb, errorRapidDiff_3Sto2S_lhcb, color3Sto2S, markerLHCb);
+	auto* statGraph_lhcb3Sto2S = myStatGraph(title, nPoints_lhcb, binning3Sto2S, rapidDiff_3Sto2S_lhcb, errorRapidDiff_3Sto2S_lhcb, color3Sto2S, markerLHCb);
 
 	/// draw
 
@@ -131,25 +154,24 @@ void energyDoubleRatios_rapidity() {
 	drawLegend(statGraph_lhcb3Sto1S, " ", xLHCb, y3Sto1S, "pl");
 	drawLegend(statGraph_lhcb3Sto2S, " ", xLHCb, y3Sto2S, "pl");
 
-	/*
-	drawHeaderLegend("fit (#chi^{2} / n_{d.o.f})", xFit, yHeader);
+	drawHeaderLegend("constant fit (#chi^{2} / n_{d.o.f})", xFit, yHeader);
 
 	/// fit
 	cout << endl
 	     << "Y(3S) / Y(2S) fit:";
-	auto fit3Sto2S = getFitResult(statGraph_mid3Sto2S, statGraph_lhcb3Sto2S);
+	auto fit3Sto2S = getLHCbFitResult(statGraph_lhcb3Sto2S);
 	drawHeaderLegend(Form("%.3f #pm%.3f (%.1f / %d)", fit3Sto2S->Value(0), fit3Sto2S->ParError(0), fit3Sto2S->Chi2(), fit3Sto2S->Ndf()), xFit, y3Sto2S);
 
 	cout << endl
 	     << "Y(2S) / Y(1S) fit:";
-	auto fit2Sto1S = getFitResult(statGraph_mid2Sto1S, statGraph_lhcb2Sto1S);
+	auto fit2Sto1S = getLHCbFitResult(statGraph_lhcb2Sto1S);
 	drawHeaderLegend(Form("%.3f #pm%.3f (%.1f / %d)", fit2Sto1S->Value(0), fit2Sto1S->ParError(0), fit2Sto1S->Chi2(), fit2Sto1S->Ndf()), xFit, y2Sto1S);
 
 	cout << endl
 	     << "Y(3S) / Y(1S) fit:";
-	auto fit3Sto1S = getFitResult(statGraph_mid3Sto1S, statGraph_lhcb3Sto1S);
+	auto fit3Sto1S = getLHCbFitResult(statGraph_lhcb3Sto1S);
 	drawHeaderLegend(Form("%.3f #pm%.3f (%.1f / %d)", fit3Sto1S->Value(0), fit3Sto1S->ParError(0), fit3Sto1S->Chi2(), fit3Sto1S->Ndf()), xFit, y3Sto1S);
-*/
+
 	gPad->RedrawAxis();
 
 	canvas->SaveAs("figures/rapidity13to8TeV.png", "RECREATE");

@@ -151,7 +151,7 @@ void rapidityRatios() {
 	drawLegend(statGraph_lhcb2Sto1S, " ", xLHCb, y2Sto1S, "pl");
 	drawLegend(statGraph_lhcb3Sto1S, " ", xLHCb, y3Sto1S, "pl");
 
-	drawHeaderLegend("fit (#chi^{2} / n_{d.o.f})", xFit, yHeader);
+	drawHeaderLegend("constant fit (#chi^{2} / n_{d.o.f})", xFit, yHeader);
 
 	/// fit
 	cout << endl

@@ -19,7 +19,7 @@ Float_t syst3Stomumu = 0.21;
 
 // to Y(2S)
 Float_t br3Sto2Sanything = 10.6;
-Float_t syst3Sto2Sanything = 0.8;
+Float_t syst3Sto2Sanything = 0.8; // i.e. 7.5% relative
 
 Float_t br3Sto2Spipluspiminus = 2.82;
 Float_t syst3Sto2Spipluspiminus = 0.18;
@@ -32,10 +32,10 @@ Float_t syst3Sto2Stwophotons = 0.7;
 
 // to Y(1S)
 Float_t br3Sto1Spipluspiminus = 4.37;
-Float_t syst3Sto1Spipluspiminus = 0.08;
+Float_t syst3Sto1Spipluspiminus = 0.08; // i.e. 1.8% relative
 
 Float_t br3Sto1Stwopizero = 2.20;
-Float_t syst3Sto1Stwopizero = 0.13;
+Float_t syst3Sto1Stwopizero = 0.13; // i.e. 5.9% relative
 
 // to chi_b(2P)
 Float_t br3Sto2P_Jequal2 = 13.1;
