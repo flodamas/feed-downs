@@ -1,5 +1,5 @@
 TCanvas* myCanvas(const char* name) {
-	auto* c = new TCanvas(name, "", 800, 600);
+	auto* c = new TCanvas(name, "", 700, 600);
 	c->SetFillColor(0);
 	return c;
 }

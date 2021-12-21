@@ -80,8 +80,8 @@ void energyDoubleRatios_lhcbpt() {
 
 	drawHeaderLegend("LHCb, 2 < #it{y} < 4.5", 0.2, yHeader);
 	drawLegend(statGraph_lhcb3Sto2S, "#varUpsilon(3S) / #varUpsilon(2S)", xUpsi, y3Sto2S, "pl");
-	drawLegend(statGraph_lhcb2Sto1S, "#varUpsilon(2S) / #varUpsilon(1S)", xUpsi, y2Sto1S, "pl");
-	drawLegend(statGraph_lhcb3Sto1S, "#varUpsilon(3S) / #varUpsilon(1S)", xUpsi, y3Sto1S, "pl");
+	drawLegend(statGraph_lhcb3Sto1S, "#varUpsilon(3S) / #varUpsilon(1S)", xUpsi, y2Sto1S, "pl");
+	drawLegend(statGraph_lhcb2Sto1S, "#varUpsilon(2S) / #varUpsilon(1S)", xUpsi, y3Sto1S, "pl");
 
 	drawUnityLine(canvas);
 

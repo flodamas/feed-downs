@@ -5,6 +5,7 @@
 #include "data/branching.C"
 #include "data/feedLHCb7and8TeV.C"
 #include "data/upsilonLHCb7and8TeV.C"
+#include "data/upsilonCMS7TeV.C"
 #include "data/upsilonCMS13TeV.C"
 
 #endif
@@ -19,14 +20,14 @@ const Color_t color3Sto2S_ = kPink + 6;
 const Int_t marker2P = 21;
 const Int_t marker3P = 22;
 
-void feeddownsTo2S(Bool_t withLogYaxis = kFALSE) {
+void feeddownsTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	// Feed-downs to Y(2S)
 	auto* canv2S = myCanvas("canv2S");
 
 	if (withLogYaxis) canv2S->SetLogy();
 
 	const char* title2S =
-	  ";#it{p}_{T}^{#varUpsilon(2S)} (GeV/#it{c});Feed-down fractions to #varUpsilon(2S) (in %)";
+	  ";#it{p}_{T}^{#varUpsilon(2S)} (GeV);Feed-down fractions to #varUpsilon(2S) (in %)";
 
 	/// Chi_b first
 	auto* stat2Pto2S =
@@ -36,7 +37,7 @@ void feeddownsTo2S(Bool_t withLogYaxis = kFALSE) {
 	  mySystGraph(nPoints2Pto2S_lhcb, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_lhcb8TeV, syst2Pto2S_lhcb8TeV, color2P);
 
 	stat2Pto2S->SetMinimum(0);
-	stat2Pto2S->SetMaximum(45);
+	stat2Pto2S->SetMaximum((withLegend) ? 50 : 45);
 	stat2Pto2S->GetXaxis()->SetLimits(0, 50);
 
 	if (withLogYaxis) {
@@ -85,21 +86,21 @@ void feeddownsTo2S(Bool_t withLogYaxis = kFALSE) {
 		syst3Sto2S_cms[i] = frac3Sto2S_cms[i] * systPerc_3S_cms13TeV[i] / 100.; // should be good
 	}
 
-	auto* statGraph_cms3Sto2S = myStatGraph(title2S, nPoints_cms, ptBinning_cms13TeV, frac3Sto2S_cms, stat3Sto2S_cms, color3Sto2S_, markerCMS);
+	auto* statGraph_cms3Sto2S = myStatGraph(title2S, nPoints_cms, ptBinning_cms13TeV, frac3Sto2S_cms, stat3Sto2S_cms, color3Sto2S_ + 1, markerCMS);
 
 	statGraph_cms3Sto2S->Draw("PZ");
 
-	auto* systGraph_cms3Sto2S = mySystGraph(nPoints_cms, ptBinning_cms13TeV, xErrorWidth, frac3Sto2S_cms, syst3Sto2S_cms, color3Sto2S_);
+	auto* systGraph_cms3Sto2S = mySystGraph(nPoints_cms, ptBinning_cms13TeV, xErrorWidth, frac3Sto2S_cms, syst3Sto2S_cms, color3Sto2S_ + 1);
 
 	systGraph_cms3Sto2S->Draw("5");
 
 	/// legend
 
-	auto* legend = new TLegend(.17, .9, .4, .7);
-	legend->AddEntry(stat2Pto2S, "from #chi_{b}(2P)", "p");
-	legend->AddEntry(stat3Sto2Sgraph_lhcb, "from #varUpsilon(3S)", "p");
-	legend->AddEntry(stat3Pto2S, "from #chi_{b}(3P)", "p");
-	legend->Draw();
+	auto* legend = new TLegend(.17, .92, .35, .65, "pp 7 and 8 TeV data, #varUpsilon(2S) from");
+	legend->AddEntry(stat2Pto2S, "#chi_{b}(2P)", "p");
+	legend->AddEntry(stat3Sto2Sgraph_lhcb, "#varUpsilon(3S)", "p");
+	legend->AddEntry(stat3Pto2S, "#chi_{b}(3P)", "p");
+	if (withLegend) legend->Draw();
 
 	canv2S->SaveAs("figures/feeddowns_to_2S_8TeV.png", "RECREATE");
 	canv2S->Close();

@@ -5,7 +5,6 @@
 #include "data/branching.C"
 #include "data/feedLHCb7and8TeV.C"
 #include "data/upsilonLHCb7and8TeV.C"
-#include "data/upsilonCMS7TeV.C"
 #include "data/upsilonCMS13TeV.C"
 
 #endif
@@ -20,14 +19,14 @@ const Int_t marker1P = 20;
 const Int_t marker2P = 21;
 const Int_t marker3P = 22;
 
-void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
+void feeddownsTo1S(Bool_t withLogYaxis = kFALSE) {
 	// Feed-downs to Y(1S)
 	auto* canv1S = myCanvas("canv1S");
 
 	if (withLogYaxis) canv1S->SetLogy();
 
 	const char* title1S =
-	  ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);Feed-down fractions to #varUpsilon(1S) (in %)";
+	  ";#it{p}_{T}^{#varUpsilon(1S)} (GeV/#it{c});Feed-down fractions to #varUpsilon(1S) (in %)";
 
 	/// Chi_b first
 	auto* stat1Pto1S =
@@ -37,8 +36,8 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	  mySystGraph(nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_lhcb8TeV, syst1Pto1S_lhcb8TeV, color1P);
 
 	stat1Pto1S->SetMinimum(0);
-	stat1Pto1S->SetMaximum((withLegend) ? 40 : 35);
-	stat1Pto1S->GetXaxis()->SetLimits(0, 50);
+	stat1Pto1S->SetMaximum(35);
+	stat1Pto1S->GetXaxis()->SetLimits(0, 40);
 
 	if (withLogYaxis) {
 		stat1Pto1S->SetMinimum(.4);
@@ -68,7 +67,7 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	/// LHCb measurements
 
-	const Int_t nPoints2Sto1S_lhcb = sizeof(ptDiff_2p0y4p5_2Sto1S_lhcb8TeV) / sizeof(float);
+	const Int_t nPoints2Sto1S_lhcb = sizeof(ptDiff_2p0y4p5_2Sto1S_lhcb8TeV) / sizeof(float) - 1;
 
 	Float_t frac2Sto1S_lhcb[nPoints2Sto1S_lhcb], error2Sto1S_lhcb[nPoints2Sto1S_lhcb];
 	Float_t frac3Sto1S_lhcb[nPoints2Sto1S_lhcb], error3Sto1S_lhcb[nPoints2Sto1S_lhcb];
@@ -90,55 +89,55 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	stat3Sto1Sgraph_lhcb->Draw("PZ");
 
 	/// CMS measurements
-	const Int_t nPoints2Sto1S_cms = sizeof(ptBinning_cms7TeV) / sizeof(Float_t) - 1;
+	const Int_t nPoints2Sto1S_cms = sizeof(ptBinning_cms13TeV) / sizeof(Float_t) - 1;
 
 	// from relative to absolute uncertainties
 	Float_t frac2Sto1S_cms[nPoints2Sto1S_cms], stat2Sto1S_cms[nPoints2Sto1S_cms], syst2Sto1S_cms[nPoints2Sto1S_cms];
 	Float_t frac3Sto1S_cms[nPoints2Sto1S_cms], stat3Sto1S_cms[nPoints2Sto1S_cms], syst3Sto1S_cms[nPoints2Sto1S_cms];
 
 	for (Int_t i = 0; i < nPoints2Sto1S_cms; i++) {
-		frac2Sto1S_cms[i] = ptDiff_2Sto1S_cms7TeV[i] * (br1Stomumu / br2Stomumu) * br2Sto1Sanything;
+		frac2Sto1S_cms[i] = ptDiff_2Sto1S_cms13TeV[i] * (br1Stomumu / br2Stomumu) * br2Sto1Sanything;
 
-		stat2Sto1S_cms[i] = frac2Sto1S_cms[i] * statPerc_2Sto1S_cms7TeV[i] / 100.;
+		stat2Sto1S_cms[i] = frac2Sto1S_cms[i] * statPerc_2Sto1S_cms13TeV[i] / 100.;
 
-		syst2Sto1S_cms[i] = frac2Sto1S_cms[i] * systPerc_2Sto1S_cms7TeV[i] / 100.;
+		syst2Sto1S_cms[i] = frac2Sto1S_cms[i] * systPerc_2Sto1S_cms13TeV[i] / 100.;
 
-		frac3Sto1S_cms[i] = ptDiff_3Sto1S_cms7TeV[i] * (br1Stomumu / br3Stomumu) * br3Sto1Sanything;
+		frac3Sto1S_cms[i] = ptDiff_3Sto1S_cms13TeV[i] * (br1Stomumu / br3Stomumu) * br3Sto1Sanything;
 
-		stat3Sto1S_cms[i] = frac3Sto1S_cms[i] * statPerc_3Sto1S_cms7TeV[i] / 100.;
+		stat3Sto1S_cms[i] = frac3Sto1S_cms[i] * statPerc_3Sto1S_cms13TeV[i] / 100.;
 
-		syst3Sto1S_cms[i] = frac3Sto1S_cms[i] * systPerc_3Sto1S_cms7TeV[i] / 100.;
+		syst3Sto1S_cms[i] = frac3Sto1S_cms[i] * systPerc_3Sto1S_cms13TeV[i] / 100.;
 	}
 
 	// Y(2S)-to-Y(1S)
 
-	auto* statGraph_cms2Sto1S = myStatGraph(title1S, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sto1S + 1, markerCMS);
+	auto* statGraph_cms2Sto1S = myStatGraph(title1S, nPoints2Sto1S_cms, ptBinning_cms13TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sto1S, markerCMS);
 
 	statGraph_cms2Sto1S->Draw("PZ");
 
-	auto* systGraph_cms2Sto1S = mySystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac2Sto1S_cms, syst2Sto1S_cms, color2Sto1S + 1);
+	auto* systGraph_cms2Sto1S = mySystGraph(nPoints2Sto1S_cms, ptBinning_cms13TeV, xErrorWidth, frac2Sto1S_cms, syst2Sto1S_cms, color2Sto1S);
 
 	systGraph_cms2Sto1S->Draw("5");
 
 	// Y(3S)-to-Y(1S)
 
-	auto* statGraph_cms3Sto1S = myStatGraph(title1S, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac3Sto1S_cms, stat3Sto1S_cms, color3Sto1S, markerCMS);
+	auto* statGraph_cms3Sto1S = myStatGraph(title1S, nPoints2Sto1S_cms, ptBinning_cms13TeV, frac3Sto1S_cms, stat3Sto1S_cms, color3Sto1S, markerCMS);
 
 	statGraph_cms3Sto1S->Draw("PZ");
 
-	auto* systGraph_cms3Sto1S = mySystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac3Sto1S_cms, syst3Sto1S_cms, color3Sto1S);
+	auto* systGraph_cms3Sto1S = mySystGraph(nPoints2Sto1S_cms, ptBinning_cms13TeV, xErrorWidth, frac3Sto1S_cms, syst3Sto1S_cms, color3Sto1S);
 
 	systGraph_cms3Sto1S->Draw("5");
 
 	/// legend
 
-	auto* legend = new TLegend(.17, .92, .35, .55, "pp 7 and 8 TeV data, #varUpsilon(1S) from");
-	legend->AddEntry(stat1Pto1S, "#chi_{b}(1P)", "p");
-	legend->AddEntry(stat2Sto1Sgraph_lhcb, "#varUpsilon(2S)", "p");
-	legend->AddEntry(stat2Pto1S, "#chi_{b}(2P)", "p");
-	legend->AddEntry(stat3Sto1Sgraph_lhcb, "#varUpsilon(3S)", "p");
-	legend->AddEntry(stat3Pto1S, "#chi_{b}(3P)", "p");
-	if (withLegend) legend->Draw();
+	auto* legend = new TLegend(.15, .9, .4, .6);
+	legend->AddEntry(stat1Pto1S, "from #chi_{b}(1P) (8 TeV)", "p");
+	legend->AddEntry(stat2Sto1Sgraph_lhcb, "from #varUpsilon(2S) (13 TeV)", "p");
+	legend->AddEntry(stat2Pto1S, "from #chi_{b}(2P) (8 TeV)", "p");
+	legend->AddEntry(stat3Sto1Sgraph_lhcb, "from #varUpsilon(3S) (13 TeV)", "p");
+	legend->AddEntry(stat3Pto1S, "from #chi_{b}(3P) (8 TeV)", "p");
+	//legend->Draw();
 
 	canv1S->SaveAs("figures/feeddowns_to_1S_8TeV.png", "RECREATE");
 	canv1S->Close();

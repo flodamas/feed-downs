@@ -30,12 +30,20 @@ Float_t syst3Sto2Stwopizero = 0.14;
 Float_t br3Sto2Stwophotons = 5.0;
 Float_t syst3Sto2Stwophotons = 0.7;
 
+Float_t br3Sto2Spizero_CL = 5.1e-4; // absolute BR, 90% CL estimate
+
 // to Y(1S)
 Float_t br3Sto1Spipluspiminus = 4.37;
 Float_t syst3Sto1Spipluspiminus = 0.08; // i.e. 1.8% relative
 
 Float_t br3Sto1Stwopizero = 2.20;
 Float_t syst3Sto1Stwopizero = 0.13; // i.e. 5.9% relative
+
+Float_t br3Sto1Seta_CL = 1e-4; // absolute BR, 90% CL estimate
+
+Float_t br3Sto1Spizero_CL = 7e-5; // absolute BR, 90% CL estimate
+
+Float_t br3Sto1Sanything = br3Sto1Spipluspiminus + br3Sto1Stwopizero;
 
 // to chi_b(2P)
 Float_t br3Sto2P_Jequal2 = 13.1;
@@ -69,6 +77,8 @@ Float_t syst2Sto1Stwopizero = 0.4;
 Float_t br2Sto1Seta = 2.9e-2;
 Float_t syst2Sto1Seta = 0.4e-2;
 
+Float_t br2Sto1Spizero = 4e-5; // absolute BR, 90% CL estimate
+
 Float_t br2Sto1Sanything = br2Sto1Spipluspiminus + br2Sto1Stwopizero + br2Sto1Seta;
 
 // to chi_b(1P)
@@ -88,6 +98,29 @@ Float_t syst2Sto1P_Jequal0 = 0.4;
 - predicted branching ratios? e.g. table 2 in https://arxiv.org/pdf/1410.8537.pdf
 */
 
+// below predicted values from NRQCD (table 2 in https://arxiv.org/pdf/1410.8537.pdf)
+
+// Chi_b,J(3P) -> Y(3S) gamma (in %)
+Float_t br3P_Jequal0_to3Sgamma = 0.51;
+Float_t br3P_Jequal1_to3Sgamma = 10.41;
+Float_t br3P_Jequal2_to3Sgamma = 6.11;
+
+const Float_t br3P_to3Sall = br3P_Jequal0_to3Sgamma + br3P_Jequal1_to3Sgamma + br3P_Jequal2_to3Sgamma;
+
+// Chi_b,J(3P) -> Y(2S) gamma (in %)
+Float_t br3P_Jequal0_to2Sgamma = 0.22;
+Float_t br3P_Jequal1_to2Sgamma = 3.68;
+Float_t br3P_Jequal2_to2Sgamma = 1.91;
+
+const Float_t br3P_to2Sall = br3P_Jequal0_to2Sgamma + br3P_Jequal1_to2Sgamma + br3P_Jequal2_to2Sgamma;
+
+// Chi_b,J(3P) -> Y(1S) gamma (in %)
+Float_t br3P_Jequal0_to1Sgamma = 0.24;
+Float_t br3P_Jequal1_to1Sgamma = 3.81;
+Float_t br3P_Jequal2_to1Sgamma = 1.92;
+
+const Float_t br3P_to1Sall = br3P_Jequal0_to1Sgamma + br3P_Jequal1_to1Sgamma + br3P_Jequal2_to1Sgamma;
+
 /// Chi_b(2P) radiative decays (branching fractions in %)
 
 // J = 2
@@ -97,6 +130,10 @@ Float_t syst2P_Jequal2_to2Sgamma = 1.2;
 Float_t br2P_Jequal2_to1Sgamma = 6.6;
 Float_t syst2P_Jequal2_to1Sgamma = 0.8;
 
+Float_t br2P_Jequal2_to1Somega = 1.10;
+Float_t systUp2P_Jequal2_to1Somega = 0.34;
+Float_t systDown2P_Jequal2_to1Somega = 0.30;
+
 // J = 1
 Float_t br2P_Jequal1_to2Sgamma = 18.1;
 Float_t syst2P_Jequal1_to2Sgamma = 1.9;
@@ -104,12 +141,21 @@ Float_t syst2P_Jequal1_to2Sgamma = 1.9;
 Float_t br2P_Jequal1_to1Sgamma = 9.9;
 Float_t syst2P_Jequal1_to1Sgamma = 1.0;
 
+Float_t br2P_Jequal1_to1Somega = 1.63;
+Float_t systUp2P_Jequal1_to1Somega = 0.40;
+Float_t systDown2P_Jequal1_to1Somega = 0.34;
+
 // J = 0
 Float_t br2P_Jequal0_to2Sgamma = 1.38;
 Float_t syst2P_Jequal0_to2Sgamma = 0.30;
 
 Float_t br2P_Jequal0_to1Sgamma = 0.38;
 Float_t syst2P_Jequal0_to1Sgamma = 0.17;
+
+// if the triplet is not resolved
+const Float_t br2P_to2Sall = br2P_Jequal2_to2Sgamma + br2P_Jequal1_to2Sgamma + br2P_Jequal0_to2Sgamma;
+
+const Float_t br2P_to1Sall = br2P_Jequal2_to1Sgamma + br2P_Jequal1_to1Sgamma + br2P_Jequal0_to1Sgamma;
 
 /// Chi_b(1P) radiative decays (branching fractions in %)
 
