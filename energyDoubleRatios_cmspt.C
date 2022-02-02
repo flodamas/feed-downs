@@ -2,10 +2,10 @@
 
 #include "myPlot.C"
 
-#include "data/branching.C"
+#include "bottomonia/branching.C"
 
-#include "data/upsilonCMS7TeV.C"
-#include "data/upsilonCMS13TeV.C"
+#include "bottomonia/upsilonCMS7TeV.C"
+#include "bottomonia/upsilonCMS13TeV.C"
 
 #endif
 

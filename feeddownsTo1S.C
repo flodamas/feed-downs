@@ -2,17 +2,17 @@
 
 #include "myPlot.C"
 
-#include "data/branching.C"
-#include "data/feedLHCb7and8TeV.C"
-#include "data/upsilonLHCb7and8TeV.C"
-#include "data/upsilonCMS7TeV.C"
-#include "data/upsilonCMS13TeV.C"
+#include "bottomonia/branching.C"
+#include "bottomonia/feedLHCb7and8TeV.C"
+#include "bottomonia/upsilonLHCb7and8TeV.C"
+#include "bottomonia/upsilonCMS7TeV.C"
+#include "bottomonia/upsilonCMS13TeV.C"
 
 #endif
 
 Float_t xErrorWidth = .4;
 
-const Color_t color1P = kRed;
+const Color_t color1P = kRed + 1;
 const Color_t color2P = kAzure + 1;
 const Color_t color3P = kGreen + 2;
 
@@ -20,7 +20,9 @@ const Int_t marker1P = 20;
 const Int_t marker2P = 21;
 const Int_t marker3P = 22;
 
-void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
+void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
+	string color = "\033[1;31m";
+
 	// Feed-downs to Y(1S)
 	auto* canv1S = myCanvas("canv1S");
 
@@ -29,12 +31,20 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	const char* title1S =
 	  ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);Feed-down fractions to #varUpsilon(1S) (in %)";
 
-	/// Chi_b first
+	// Chi_b(1P) first
+
+	cout << color << endl
+	     << "X_b(1P) -> Y(1S)"
+	     << "\033[0m" << endl;
+
+	for (Int_t i = 0; i < nPoints1Pto1S_lhcb; i++)
+		cout << ptBinning1Pto1S_lhcb[i] << " < pT < " << ptBinning1Pto1S_lhcb[i + 1] << " : " << frac1Pto1S_lhcb8TeV[i] << " +/- " << stat1Pto1S_lhcb8TeV[i] << " +/- " << syst1Pto1S_lhcb8TeV[i] << endl;
+
 	auto* stat1Pto1S =
 	  myStatGraph(title1S, nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, frac1Pto1S_lhcb8TeV, stat1Pto1S_lhcb8TeV, color1P, marker2P);
 
 	auto* syst1Pto1S =
-	  mySystGraph(nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_lhcb8TeV, syst1Pto1S_lhcb8TeV, color1P);
+	  mySystGraph(nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_lhcb8TeV, syst1Pto1S_lhcb8TeV, color1P - 1);
 
 	stat1Pto1S->SetMinimum(0);
 	stat1Pto1S->SetMaximum((withLegend) ? 40 : 35);
@@ -48,6 +58,8 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	stat1Pto1S->Draw("APZ");
 	syst1Pto1S->Draw("5");
 
+	// Chi_b(2P)
+
 	auto* stat2Pto1S =
 	  myStatGraph(title1S, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_lhcb8TeV, stat2Pto1S_lhcb8TeV, color2P, marker2P);
 
@@ -60,15 +72,14 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	auto* stat3Pto1S =
 	  myStatGraph(title1S, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, frac3Pto1S_lhcb8TeV, stat3Pto1S_lhcb8TeV, color3P, marker2P);
 
-	auto* syst3Pto1S =
-	  mySystGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, frac3Pto1S_lhcb8TeV, syst3Pto1S_lhcb8TeV, color3P);
+	auto* syst3Pto1S = mySystGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, frac3Pto1S_lhcb8TeV, syst3Pto1S_lhcb8TeV, color3P);
 
 	stat3Pto1S->Draw("PZ");
 	syst3Pto1S->Draw("5");
 
 	/// LHCb measurements
 
-	const Int_t nPoints2Sto1S_lhcb = sizeof(ptDiff_2p0y4p5_2Sto1S_lhcb8TeV) / sizeof(float);
+	const Int_t nPoints2Sto1S_lhcb = sizeof(ptDiff_2p0y4p5_2Sto1S_lhcb8TeV) / sizeof(float) - 3;
 
 	Float_t frac2Sto1S_lhcb[nPoints2Sto1S_lhcb], error2Sto1S_lhcb[nPoints2Sto1S_lhcb];
 	Float_t frac3Sto1S_lhcb[nPoints2Sto1S_lhcb], error3Sto1S_lhcb[nPoints2Sto1S_lhcb];
@@ -132,6 +143,8 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	/// legend
 
+	if (!withLegend) drawHeaderLegend("7 and 8 TeV pp data", .18, .9);
+
 	auto* legend = new TLegend(.17, .92, .35, .55, "pp 7 and 8 TeV data, #varUpsilon(1S) from");
 	legend->AddEntry(stat1Pto1S, "#chi_{b}(1P)", "p");
 	legend->AddEntry(stat2Sto1Sgraph_lhcb, "#varUpsilon(2S)", "p");
@@ -142,4 +155,63 @@ void feeddownsTo1S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	canv1S->SaveAs("figures/feeddowns_to_1S_8TeV.png", "RECREATE");
 	canv1S->Close();
+
+	/// print the results, in the order of importance
+
+	// Chi_b(1P) first
+
+	cout << color << endl
+	     << "X_b(1P) -> Y(1S)"
+	     << "\033[0m" << endl;
+
+	for (Int_t i = 0; i < nPoints1Pto1S_lhcb; i++)
+		cout << ptBinning1Pto1S_lhcb[i] << " < pT < " << ptBinning1Pto1S_lhcb[i + 1] << " : " << frac1Pto1S_lhcb8TeV[i] << " +/- " << stat1Pto1S_lhcb8TeV[i] << " +/- " << syst1Pto1S_lhcb8TeV[i] << endl;
+
+	// Y(2S)
+
+	cout << color << endl
+	     << "Y(2S) -> Y(1S)"
+	     << "\033[0m" << endl;
+
+	cout << "LHCb" << endl;
+	for (Int_t i = 0; i < nPoints2Sto1S_lhcb; i++)
+		cout << ptBinning_2p0y4p5_lhcb7and8TeV[i] << " < pT < " << ptBinning_2p0y4p5_lhcb7and8TeV[i + 1] << " : " << frac2Sto1S_lhcb[i] << " +/- " << error2Sto1S_lhcb[i] << endl;
+
+	cout << endl
+	     << "CMS" << endl;
+	for (Int_t i = 0; i < nPoints2Sto1S_cms; i++)
+		cout << ptBinning_cms7TeV[i] << " < pT < " << ptBinning_cms7TeV[i + 1] << " : " << frac2Sto1S_cms[i] << " +/- " << stat2Sto1S_cms[i] << " +/- " << syst2Sto1S_cms[i] << endl;
+
+	// Chi_b(2P)
+
+	cout << color << endl
+	     << "X_b(2P) -> Y(1S)"
+	     << "\033[0m" << endl;
+
+	for (Int_t i = 0; i < nPoints2Pto1S_lhcb; i++)
+		cout << ptBinning2Pto1S_lhcb[i] << " < pT < " << ptBinning2Pto1S_lhcb[i + 1] << " : " << frac2Pto1S_lhcb8TeV[i] << " +/- " << stat2Pto1S_lhcb8TeV[i] << " +/- " << syst2Pto1S_lhcb8TeV[i] << endl;
+
+	// Y(3S)
+
+	cout << color << endl
+	     << "Y(3S) -> Y(1S)"
+	     << "\033[0m" << endl;
+
+	cout << "LHCb" << endl;
+	for (Int_t i = 0; i < nPoints2Sto1S_lhcb; i++)
+		cout << ptBinning_2p0y4p5_lhcb7and8TeV[i] << " < pT < " << ptBinning_2p0y4p5_lhcb7and8TeV[i + 1] << " : " << frac3Sto1S_lhcb[i] << " +/- " << error3Sto1S_lhcb[i] << endl;
+
+	cout << endl
+	     << "CMS" << endl;
+	for (Int_t i = 0; i < nPoints2Sto1S_cms; i++)
+		cout << ptBinning_cms7TeV[i] << " < pT < " << ptBinning_cms7TeV[i + 1] << " : " << frac3Sto1S_cms[i] << " +/- " << stat3Sto1S_cms[i] << " +/- " << syst3Sto1S_cms[i] << endl;
+
+	// Chi_b(3P)
+
+	cout << color << endl
+	     << "X_b(3P) -> Y(1S)"
+	     << "\033[0m" << endl;
+
+	for (Int_t i = 0; i < nPoints3Pto1S_lhcb; i++)
+		cout << ptBinning3Pto1S_lhcb[i] << " < pT < " << ptBinning3Pto1S_lhcb[i + 1] << " : " << frac3Pto1S_lhcb8TeV[i] << " +/- " << stat3Pto1S_lhcb8TeV[i] << " +/- " << syst3Pto1S_lhcb8TeV[i] << endl;
 }

@@ -2,11 +2,11 @@
 
 #include "myPlot.C"
 
-#include "data/branching.C"
-#include "data/feedLHCb7and8TeV.C"
-#include "data/upsilonLHCb7and8TeV.C"
-#include "data/upsilonCMS7TeV.C"
-#include "data/upsilonCMS13TeV.C"
+#include "bottomonia/branching.C"
+#include "bottomonia/feedLHCb7and8TeV.C"
+#include "bottomonia/upsilonLHCb7and8TeV.C"
+#include "bottomonia/upsilonCMS7TeV.C"
+#include "bottomonia/upsilonCMS13TeV.C"
 
 #endif
 
@@ -20,7 +20,7 @@ const Color_t color3Sto2S_ = kPink + 6;
 const Int_t marker2P = 21;
 const Int_t marker3P = 22;
 
-void feeddownsTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
+void feeddownsTo2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	// Feed-downs to Y(2S)
 	auto* canv2S = myCanvas("canv2S");
 
@@ -59,7 +59,7 @@ void feeddownsTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	/// LHCb measurements
 
-	const Int_t nPoints_lhcb = sizeof(ptDiff_2p0y4p5_2Sto1S_lhcb8TeV) / sizeof(float);
+	const Int_t nPoints_lhcb = sizeof(ptDiff_2p0y4p5_2Sto1S_lhcb8TeV) / sizeof(float) - 3;
 
 	Float_t frac3Sto2S_lhcb[nPoints_lhcb], error3Sto2S_lhcb[nPoints_lhcb];
 
@@ -73,30 +73,31 @@ void feeddownsTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	stat3Sto2Sgraph_lhcb->Draw("PZ");
 
 	/// CMS measurements
-	const Int_t nPoints_cms = sizeof(ptBinning_cms13TeV) / sizeof(Float_t) - 1;
+	const Int_t nPoints_cms = sizeof(ptBinning_cms7TeV) / sizeof(Float_t) - 1;
 
 	// from relative to absolute uncertainties
 	Float_t frac3Sto2S_cms[nPoints_cms], stat3Sto2S_cms[nPoints_cms], syst3Sto2S_cms[nPoints_cms];
 
 	for (Int_t i = 0; i < nPoints_cms; i++) {
-		frac3Sto2S_cms[i] = (ptDiff_3S_cms13TeV[i] / ptDiff_2S_cms13TeV[i]) * (br2Stomumu / br3Stomumu) * br3Sto2Sanything;
+		frac3Sto2S_cms[i] = (ptDiff_3S_cms7TeV[i] / ptDiff_2S_cms7TeV[i]) * (br2Stomumu / br3Stomumu) * br3Sto2Sanything;
 
-		stat3Sto2S_cms[i] = frac3Sto2S_cms[i] * TMath::Hypot(statPerc_3S_cms13TeV[i], statPerc_2S_cms13TeV[i]) / 100.;
+		stat3Sto2S_cms[i] = frac3Sto2S_cms[i] * TMath::Hypot(statPerc_3S_cms7TeV[i], statPerc_2S_cms7TeV[i]) / 100.;
 
-		syst3Sto2S_cms[i] = frac3Sto2S_cms[i] * systPerc_3S_cms13TeV[i] / 100.; // should be good
+		syst3Sto2S_cms[i] = frac3Sto2S_cms[i] * systPerc_3Sto1S_cms7TeV[i] / 100.; // should be good
 	}
 
-	auto* statGraph_cms3Sto2S = myStatGraph(title2S, nPoints_cms, ptBinning_cms13TeV, frac3Sto2S_cms, stat3Sto2S_cms, color3Sto2S_ + 1, markerCMS);
+	auto* statGraph_cms3Sto2S = myStatGraph(title2S, nPoints_cms, ptBinning_cms7TeV, frac3Sto2S_cms, stat3Sto2S_cms, color3Sto2S_ + 1, markerCMS);
 
 	statGraph_cms3Sto2S->Draw("PZ");
 
-	auto* systGraph_cms3Sto2S = mySystGraph(nPoints_cms, ptBinning_cms13TeV, xErrorWidth, frac3Sto2S_cms, syst3Sto2S_cms, color3Sto2S_ + 1);
+	auto* systGraph_cms3Sto2S = mySystGraph(nPoints_cms, ptBinning_cms7TeV, xErrorWidth, frac3Sto2S_cms, syst3Sto2S_cms, color3Sto2S_ + 1);
 
 	systGraph_cms3Sto2S->Draw("5");
 
 	/// legend
+	if (!withLegend) drawHeaderLegend("7 and 8 TeV pp data", .18, .9);
 
-	auto* legend = new TLegend(.17, .92, .35, .65, "pp 7 and 8 TeV data, #varUpsilon(2S) from");
+	auto* legend = new TLegend(.17, .92, .35, .65, "7 and 8 TeV data, #varUpsilon(2S) from");
 	legend->AddEntry(stat2Pto2S, "#chi_{b}(2P)", "p");
 	legend->AddEntry(stat3Sto2Sgraph_lhcb, "#varUpsilon(3S)", "p");
 	legend->AddEntry(stat3Pto2S, "#chi_{b}(3P)", "p");

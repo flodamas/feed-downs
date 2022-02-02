@@ -20,9 +20,7 @@ const Int_t markerATLAS = 21;
 const Int_t markerCMS = 20;
 const Int_t markerLHCb = 22;
 
-TGraphErrors* myStatGraph(const char* title, Int_t nPoints, Float_t xBinning[],
-                          Float_t y[], Float_t yErr[], Color_t color = kRed,
-                          Int_t markerStyle = 20) {
+TGraphErrors* myStatGraph(const char* title, Int_t nPoints, Float_t xBinning[], Float_t y[], Float_t yErr[], Color_t color = kRed, Int_t markerStyle = 20) {
 	Float_t x[nPoints], xErr[nPoints];
 
 	for (Int_t i = 0; i < nPoints; i++) {
@@ -53,6 +51,46 @@ TGraphErrors* mySystGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth
 	}
 
 	auto* graph = new TGraphErrors(nPoints, x, y, xErr, yErr);
+
+	graph->SetLineWidth(0);
+	graph->SetFillStyle(1001);
+	graph->SetLineColor(color); // box
+	//graph->SetFillColor(color);
+	graph->SetFillColorAlpha(color, .4);
+
+	return graph;
+}
+
+TGraphAsymmErrors* statAsymmGraph(const char* title, Int_t nPoints, Float_t xBinning[], Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed, Int_t markerStyle = 20) {
+	Float_t x[nPoints], xErr[nPoints];
+
+	for (Int_t i = 0; i < nPoints; i++) {
+		x[i] = (xBinning[i + 1] + xBinning[i]) / 2;
+		xErr[i] = (xBinning[i + 1] - xBinning[i]) / 2;
+	}
+
+	auto* graph = new TGraphAsymmErrors(nPoints, x, y, xErr, xErr, yErrMinus, yErrPlus);
+
+	graph->SetTitle(title);
+	graph->SetMarkerStyle(markerStyle);
+	graph->SetMarkerColor(color);
+	graph->SetLineColor(color); // for error bars
+	graph->SetLineWidth(2);
+
+	graph->SetMinimum(0);
+
+	return graph;
+}
+
+TGraphAsymmErrors* systAsymmGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth, Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed, Int_t markerStyle = 20) {
+	Float_t x[nPoints], xErr[nPoints];
+
+	for (Int_t i = 0; i < nPoints; i++) {
+		x[i] = (xBinning[i + 1] + xBinning[i]) / 2;
+		xErr[i] = xErrorWidth;
+	}
+
+	auto* graph = new TGraphAsymmErrors(nPoints, x, y, xErr, xErr, yErrMinus, yErrPlus);
 
 	graph->SetLineWidth(0);
 	graph->SetFillStyle(1001);

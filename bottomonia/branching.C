@@ -123,6 +123,8 @@ const Float_t br3P_to1Sall = br3P_Jequal0_to1Sgamma + br3P_Jequal1_to1Sgamma + b
 
 /// Chi_b(2P) radiative decays (branching fractions in %)
 
+// PS: recent Belle measurements https://arxiv.org/pdf/2108.03497.pdf
+
 // J = 2
 Float_t br2P_Jequal2_to2Sgamma = 8.9;
 Float_t syst2P_Jequal2_to2Sgamma = 1.2;
@@ -133,6 +135,11 @@ Float_t syst2P_Jequal2_to1Sgamma = 0.8;
 Float_t br2P_Jequal2_to1Somega = 1.10;
 Float_t systUp2P_Jequal2_to1Somega = 0.34;
 Float_t systDown2P_Jequal2_to1Somega = 0.30;
+
+Float_t br2P_Jequal2_to1Somega_Belle = 0.46;
+Float_t stat2P_Jequal2_to1Somega_Belle = 0.12;
+Float_t systUp2P_Jequal2_to1Somega_Belle = 0.06;
+Float_t systDown2P_Jequal2_to1Somega_Belle = 0.07;
 
 // J = 1
 Float_t br2P_Jequal1_to2Sgamma = 18.1;
@@ -145,6 +152,11 @@ Float_t br2P_Jequal1_to1Somega = 1.63;
 Float_t systUp2P_Jequal1_to1Somega = 0.40;
 Float_t systDown2P_Jequal1_to1Somega = 0.34;
 
+Float_t br2P_Jequal1_to1Somega_Belle = 2.38;
+Float_t stat2P_Jequal1_to1Somega_Belle = 0.18;
+Float_t systUp2P_Jequal1_to1Somega_Belle = 0.23;
+Float_t systDown2P_Jequal1_to1Somega_Belle = 0.24;
+
 // J = 0
 Float_t br2P_Jequal0_to2Sgamma = 1.38;
 Float_t syst2P_Jequal0_to2Sgamma = 0.30;
@@ -152,10 +164,21 @@ Float_t syst2P_Jequal0_to2Sgamma = 0.30;
 Float_t br2P_Jequal0_to1Sgamma = 0.38;
 Float_t syst2P_Jequal0_to1Sgamma = 0.17;
 
+Float_t br2P_Jequal0_to1Somega_Belle = 0.56;
+Float_t statUp2P_Jequal0_to1Somega_Belle = 0.19;
+Float_t statDown2P_Jequal0_to1Somega_Belle = 0.18;
+Float_t syst2P_Jequal0_to1Somega_Belle = 0.08;
+
 // if the triplet is not resolved
 const Float_t br2P_to2Sall = br2P_Jequal2_to2Sgamma + br2P_Jequal1_to2Sgamma + br2P_Jequal0_to2Sgamma;
 
-const Float_t br2P_to1Sall = br2P_Jequal2_to1Sgamma + br2P_Jequal1_to1Sgamma + br2P_Jequal0_to1Sgamma;
+const Float_t br2P_to1Sall = br2P_Jequal2_to1Sgamma + br2P_Jequal2_to1Somega_Belle + br2P_Jequal1_to1Sgamma + br2P_Jequal1_to1Somega_Belle + br2P_Jequal0_to1Sgamma + br2P_Jequal0_to1Somega_Belle;
+
+// predicted values from NRQCD (table 2 in https://arxiv.org/pdf/1410.8537.pdf)
+
+const Float_t br2P_to2Sall_NRQCD = 15.6 + 8.3;
+
+const Float_t br2P_to1Sall_NRQCD = 9.7 + 7.3;
 
 /// Chi_b(1P) radiative decays (branching fractions in %)
 

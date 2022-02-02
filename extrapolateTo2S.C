@@ -2,11 +2,14 @@
 
 #include "myPlot.C"
 
-#include "data/branching.C"
-#include "data/feedLHCb7and8TeV.C"
-#include "data/upsilonLHCb7and8TeV.C"
-#include "data/upsilonCMS7TeV.C"
-#include "data/upsilonCMS13TeV.C"
+#include "bottomonia/branching.C"
+#include "bottomonia/feedLHCb7and8TeV.C"
+#include "bottomonia/upsilonLHCb7and8TeV.C"
+#include "bottomonia/upsilonCMS7TeV.C"
+#include "bottomonia/upsilonCMS13TeV.C"
+
+#include "bottomonia/chib1PstatesCMS8TeV.C"
+#include "charmonia/chicRatioLHCb7TeV.C"
 
 #endif
 
@@ -23,15 +26,19 @@ const Int_t marker3P = 22;
 
 // pt binning = (6,8,10,14,18,22,40)
 
-Float_t ratio2Sto1S[] = {.2762, .3049, .342, .394, .440, .492};
+Float_t ratio2Sto1S[] = {.2762, .3049, .338, .392, .438, .485};
 
-Float_t stat2Sto1S[] = {.0021, .0027, .013, .012, .012, .008};
+Float_t stat2Sto1S[] = {.0021, .0027, .002, .003, .004, .005};
+
+Float_t syst2Sto1S[] = {.0, .0, .019, .016, .015, .015};
 
 // pt binning = (10,14,18,22,40)
 
-Float_t ratio3Sto1S[] = {.197, .254, .308, .344};
+Float_t ratio3Sto1S[] = {.191, .252, .304, .339};
 
-Float_t stat3Sto1S[] = {.009, .008, .009, .006};
+Float_t stat3Sto1S[] = {.001, .002, .004, .004};
+
+Float_t syst3Sto1S[] = {.013, .011, .012, .012};
 
 void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	// Feed-downs to Y(2S)
@@ -60,11 +67,11 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	statGraph_cms3Sto2S->SetMaximum((withLegend) ? 50 : 45);
 	statGraph_cms3Sto2S->GetXaxis()->SetLimits(0, 40);
-	statGraph_cms3Sto2S->Draw("APZ");
+	//statGraph_cms3Sto2S->Draw("APZ");
 
 	auto* systGraph_cms3Sto2S = mySystGraph(nPoints_cms, ptBinning_cms7TeV, xErrorWidth, frac3Sto2S_cms, syst3Sto2S_cms, color3Sto2S_);
 
-	systGraph_cms3Sto2S->Draw("5");
+	//systGraph_cms3Sto2S->Draw("5");
 
 	/// Chi_b(2P)
 
@@ -76,26 +83,33 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	  mySystGraph(nPoints2Pto2S_lhcb, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_lhcb8TeV, syst2Pto2S_lhcb8TeV, color2P);
 
 	directStat2Pto2S->SetMinimum(0);
-	directStat2Pto2S->SetMaximum((withLegend) ? 50 : 45);
+	directStat2Pto2S->SetMaximum((withLegend) ? 60 : 45);
 	directStat2Pto2S->GetXaxis()->SetLimits(0, 40);
 
-	directStat2Pto2S->Draw("PZ");
+	directStat2Pto2S->Draw("APZ");
 	directSyst2Pto2S->Draw("5");
 
 	// extrapolate with chi_b(2P) -> Y(1S) FD measurements
 
-	Float_t extFD_2Pto2S[nPoints2Pto1S_lhcb], statExtFD_2Pto2S[nPoints2Pto1S_lhcb];
+	Float_t extFD_2Pto2S[nPoints2Pto1S_lhcb], statExtFD_2Pto2S[nPoints2Pto1S_lhcb], systExtFD_2Pto2S[nPoints2Pto1S_lhcb];
 
 	for (Int_t i = 0; i < nPoints2Pto1S_lhcb; i++) {
-		extFD_2Pto2S[i] = (frac2Pto1S_lhcb8TeV[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * (br2P_to2Sall / br2P_to1Sall);
+		extFD_2Pto2S[i] = (frac2Pto1S_lhcb8TeV[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * ((br2P_Jequal1_to2Sgamma + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to2Sgamma) / (br2P_Jequal1_to1Sgamma + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to1Sgamma));
 
 		statExtFD_2Pto2S[i] = extFD_2Pto2S[i] * TMath::Hypot(stat2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i], stat2Sto1S[i] / ratio2Sto1S[i]);
+
+		systExtFD_2Pto2S[i] = extFD_2Pto2S[i] * TMath::Hypot(syst2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i], syst2Sto1S[i] / ratio2Sto1S[i]);
 	}
 
 	auto* extStat2Pto2S =
 	  myStatGraph(title2S, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, extFD_2Pto2S, statExtFD_2Pto2S, color2P + 1, marker2P + 4);
 
 	extStat2Pto2S->Draw("PZ");
+
+	auto* extSyst2Pto2S =
+	  mySystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, extFD_2Pto2S, systExtFD_2Pto2S, kGray + 1);
+
+	extSyst2Pto2S->Draw("5");
 
 	/// Chi_b(3P)
 
@@ -112,12 +126,14 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	// extrapolate with chi_b(3P) -> Y(1S) FD measurements
 
-	Float_t extFD_3Pto2S[nPoints3Pto1S_lhcb], statExtFD_3Pto2S[nPoints3Pto1S_lhcb];
+	Float_t extFD_3Pto2S[nPoints3Pto1S_lhcb], statExtFD_3Pto2S[nPoints3Pto1S_lhcb], systExtFD_3Pto2S[nPoints3Pto1S_lhcb];
 
 	for (Int_t i = 0; i < nPoints3Pto1S_lhcb; i++) {
-		extFD_3Pto2S[i] = (frac3Pto1S_lhcb8TeV[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * (br3P_to2Sall / br3P_to1Sall);
+		extFD_3Pto2S[i] = (frac3Pto1S_lhcb8TeV[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * ((br3P_Jequal1_to2Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to2Sgamma) / (br3P_Jequal1_to1Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to1Sgamma));
 
 		statExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(stat3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i], stat3Sto1S[i] / ratio3Sto1S[i]);
+
+		systExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(syst3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i], syst3Sto1S[i] / ratio3Sto1S[i]);
 	}
 
 	auto* extStat3Pto2S =
@@ -125,22 +141,36 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	extStat3Pto2S->Draw("PZ");
 
+	auto* extSyst3Pto2S =
+	  mySystGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, extFD_3Pto2S, systExtFD_3Pto2S, color3P);
+
+	extSyst3Pto2S->Draw("5");
+
 	/// legend
 
 	Float_t yHeader = .9, y2P = yHeader - .07, y3P = y2P - .07;
 
-	Float_t xChib = .18, xDirect = .3, xExtrap = .48;
+	Float_t xChib = .17, xDirect = .265, xExtrap = xDirect + .19;
 
 	drawHeaderLegend("pp 7 and 8 TeV data, #varUpsilon(2S) from", xChib, yHeader);
 
 	drawHeaderLegend("#chi_{b}(2P)", xChib, y2P);
-	drawLegend(directStat2Pto2S, "direct", xDirect, y2P, "pl");
-	drawLegend(extStat2Pto2S, "extrapolation", xExtrap, y2P, "pl");
+	drawLegend(directStat2Pto2S, "reported", xDirect, y2P, "pl");
+	drawLegend(extStat2Pto2S, "derived from #chi_{b}(2P) #rightarrow #varUpsilon(1S)", xExtrap, y2P, "pl");
 
 	drawHeaderLegend("#chi_{b}(3P)", xChib, y3P);
-	drawLegend(directStat3Pto2S, "direct", xDirect, y3P, "pl");
-	drawLegend(extStat3Pto2S, "extrapolation", xExtrap, y3P, "pl");
+	drawLegend(directStat3Pto2S, "reported", xDirect, y3P, "pl");
+	drawLegend(extStat3Pto2S, "derived from #chi_{b}(3P) #rightarrow #varUpsilon(1S)", xExtrap, y3P, "pl");
+
+	drawHeaderLegend(Form("#it{R}_{21} = %.2f #pm %.2f", ratio2to1_chib1P_CMSaverage, systRatio2to1_chib1P_CMSaverage), xChib, .6);
 
 	canv2S->SaveAs("figures/extrapolate_FDto2S.png", "RECREATE");
 	canv2S->Close();
+
+	//
+
+	for (Int_t i = 0; i < nPoints_chic_lhcb7TeV; i++) {
+		//ptScaled_chic_lhcb7TeV[i] = 2.8 * ptBinning_chic_lhcb7TeV[i];
+		cout << ptScaled_chic_lhcb7TeV[i] << endl;
+	}
 }

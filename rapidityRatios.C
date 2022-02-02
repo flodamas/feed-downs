@@ -2,10 +2,10 @@
 
 #include "myPlot.C"
 
-#include "data/upsilonCMS7TeV.C"
-#include "data/upsilonATLAS7TeV.C"
-#include "data/upsilonLHCb7and8TeV.C"
-#include "data/upsilonLHCb13TeV.C"
+#include "bottomonia/upsilonCMS7TeV.C"
+#include "bottomonia/upsilonATLAS7TeV.C"
+#include "bottomonia/upsilonLHCb7and8TeV.C"
+#include "bottomonia/upsilonLHCb13TeV.C"
 
 #endif
 

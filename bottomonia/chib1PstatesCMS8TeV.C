@@ -15,3 +15,7 @@ Float_t ratio2to1_chib1P_cms8TeV[] = {.56, .47, .45, .5};
 Float_t stat_ratio2to1_chib1P_cms8TeV[] = {.10, .06, .07, .06};
 
 Float_t syst_ratio2to1_chib1P_cms8TeV[] = {.06, .04, .04, .05};
+
+const Float_t ratio2to1_chib1P_CMSaverage = 0.85;
+
+const Float_t systRatio2to1_chib1P_CMSaverage = 0.07;

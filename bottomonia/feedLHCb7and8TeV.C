@@ -11,7 +11,7 @@ Float_t frac1Pto1S_lhcb7TeV[] = {14.8, 17.2, 21.3, 24.4, 27.2, 29.2};
 Float_t stat1Pto1S_lhcb7TeV[] = {1.2, 1.0, 0.8, 1.3, 2.1, 2.5};
 Float_t syst1Pto1S_lhcb7TeV[] = {1.3, 1.4, 1.4, 1.2, 2.1, 1.7};
 
-Float_t frac1Pto1S_lhcb8TeV[] = {15.5, 18.5, 23.2, 24.2, 26, 28.5};
+Float_t frac1Pto1S_lhcb8TeV[] = {15.5, 18.5, 23.2, 24.2, 26.0, 28.5};
 Float_t stat1Pto1S_lhcb8TeV[] = {0.9, 0.7, 0.6, 0.9, 1.4, 1.8};
 Float_t syst1Pto1S_lhcb8TeV[] = {1.3, 1.5, 1.4, 1.2, 1.2, 2.1};
 

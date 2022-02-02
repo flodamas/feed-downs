@@ -2,17 +2,17 @@
 
 #include "myPlot.C"
 
-#include "data/branching.C"
-#include "data/upsilonATLAS7TeV.C"
-#include "data/upsilonCMS7TeV.C"
-#include "data/upsilonLHCb7and8TeV.C"
+#include "bottomonia/branching.C"
+#include "bottomonia/upsilonATLAS7TeV.C"
+#include "bottomonia/upsilonCMS7TeV.C"
+#include "bottomonia/upsilonLHCb7and8TeV.C"
 
 #endif
 
 Float_t xErrorWidth = .4;
 
 void ptRatios_7TeV(Bool_t withLogYaxis = kFALSE) {
-	const char* title = ";#it{p}_{T} (GeV/#it{c});BR(#varUpsilon#rightarrow #mu^{#plus}#mu^{#minus}) #times cross-section ratio";
+	const char* title = ";#it{p}_{T} (GeV);BR(#varUpsilon#rightarrow #mu^{#plus}#mu^{#minus}) #times cross-section ratio";
 
 	/// Y(2S)-to-Y(1S)
 
@@ -28,10 +28,10 @@ void ptRatios_7TeV(Bool_t withLogYaxis = kFALSE) {
 	if (withLogYaxis) {
 		canvas2Sto1S->SetLogy();
 		statGraph_atlas2Sto1S->SetMinimum(0.15);
-		statGraph_atlas2Sto1S->SetMaximum(1);
+		statGraph_atlas2Sto1S->SetMaximum(.8);
 	}
 
-	statGraph_atlas2Sto1S->GetXaxis()->SetLimits(0, 100);
+	statGraph_atlas2Sto1S->GetXaxis()->SetLimits(0, 50);
 	statGraph_atlas2Sto1S->Draw("APZ");
 
 	auto* systGraph_atlas2Sto1S = mySystGraph(nPoints_atlas, ptBinning_atlas7TeV, xErrorWidth, ptDiff_2Sto1S_atlas7TeV, systPtDiff_2Sto1S_atlas7TeV, colorATLAS - 1);
@@ -76,10 +76,10 @@ void ptRatios_7TeV(Bool_t withLogYaxis = kFALSE) {
 
 	// legend
 
-	Float_t xLegend = .2;
-	Float_t yHeader = .9, yATLAS = yHeader - .06, yCMS = yATLAS - .06, yLHCb = yCMS - .06;
+	Float_t xLegend = .5;
+	Float_t yHeader = .9, yATLAS = .4, yCMS = yATLAS - .06, yLHCb = yCMS - .06;
 
-	drawHeaderLegend("#varUpsilon(2S) / #varUpsilon(1S), pp #sqrt{#it{s}} = 7 TeV", xLegend, yHeader);
+	drawHeaderLegend("#varUpsilon(2S) / #varUpsilon(1S), pp #sqrt{#it{s}} = 7 TeV", .2, yHeader);
 
 	drawLegend(statGraph_atlas2Sto1S, "ATLAS, |#it{y} | < 1.2", xLegend, yATLAS, "pl");
 	drawLegend(statGraph_cms2Sto1S, "CMS, |#it{y} | < 1.2", xLegend, yCMS, "pl");
@@ -100,7 +100,7 @@ void ptRatios_7TeV(Bool_t withLogYaxis = kFALSE) {
 	if (withLogYaxis) {
 		canvas3Sto1S->SetLogy();
 		statGraph_atlas3Sto1S->SetMinimum(0.06);
-		statGraph_atlas3Sto1S->SetMaximum(1.2);
+		statGraph_atlas3Sto1S->SetMaximum(.7);
 	}
 
 	statGraph_atlas3Sto1S->GetXaxis()->SetLimits(0, 50);
@@ -125,7 +125,7 @@ void ptRatios_7TeV(Bool_t withLogYaxis = kFALSE) {
 
 	// legend
 
-	drawHeaderLegend("#varUpsilon(3S) / #varUpsilon(1S), pp #sqrt{#it{s}} = 7 TeV", xLegend, yHeader);
+	drawHeaderLegend("#varUpsilon(3S) / #varUpsilon(1S), pp #sqrt{#it{s}} = 7 TeV", .2, yHeader);
 
 	drawLegend(statGraph_atlas3Sto1S, "ATLAS, |#it{y} | < 1.2", xLegend, yATLAS, "pl");
 	drawLegend(statGraph_cms3Sto1S, "CMS, |#it{y} | < 1.2", xLegend, yCMS, "pl");
@@ -156,7 +156,7 @@ void ptRatios_7TeV(Bool_t withLogYaxis = kFALSE) {
 	if (withLogYaxis) {
 		canvas3Sto2S->SetLogy();
 		statGraph_atlas3Sto2S->SetMinimum(0.3);
-		statGraph_atlas3Sto2S->SetMaximum(1.5);
+		statGraph_atlas3Sto2S->SetMaximum(1.1);
 	}
 
 	statGraph_atlas3Sto2S->GetXaxis()->SetLimits(0, 50);
@@ -183,7 +183,7 @@ void ptRatios_7TeV(Bool_t withLogYaxis = kFALSE) {
 
 	// legend
 
-	drawHeaderLegend("#varUpsilon(3S) / #varUpsilon(2S), pp #sqrt{#it{s}} = 7 TeV", xLegend, yHeader);
+	drawHeaderLegend("#varUpsilon(3S) / #varUpsilon(2S), pp #sqrt{#it{s}} = 7 TeV", .2, yHeader);
 
 	drawLegend(statGraph_atlas3Sto2S, "ATLAS, |#it{y} | < 1.2", xLegend, yATLAS, "pl");
 	drawLegend(statGraph_cms3Sto2S, "CMS, |#it{y} | < 1.2", xLegend, yCMS, "pl");
