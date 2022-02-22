@@ -22,4 +22,4 @@ Float_t brSyst_ratio2to1_chic_lhcb7TeV[] = {0.1, 0.08, 0.1};
 
 Float_t ptScaled_chic_lhcb7TeV[nPoints_chic_lhcb7TeV];
 
-for (Int_t i = 0; i < nPoints_chic_lhcb7TeV; i++) ptScaled_chic_lhcb7TeV[i] = 2.8 * ptBinning_chic_lhcb7TeV[i];
+//for (Int_t i = 0; i < nPoints_chic_lhcb7TeV; i++) ptScaled_chic_lhcb7TeV[i] = 2.8 * ptBinning_chic_lhcb7TeV[i];

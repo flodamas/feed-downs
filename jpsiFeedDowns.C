@@ -53,7 +53,7 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	statChic_lhcb->SetMinimum(0);
 	statChic_lhcb->SetMaximum((withLegend) ? 45 : 35);
-	statChic_lhcb->GetXaxis()->SetLimits(0, 30);
+	statChic_lhcb->GetXaxis()->SetLimits(0, 40);
 
 	if (withLogYaxis) {
 		statChic_lhcb->SetMinimum(.4);
@@ -119,17 +119,17 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		//systPsi2SToJpsi_cms[i] = fracPsi2SToJpsi_cms[i] * systPercPtRatio_psi2S_cms13TeV[i] / 100.;
 	}
 
-	auto* statPsi2S_cms = myStatGraph(title, nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, fracPsi2SToJpsi_cms, statPsi2SToJpsi_cms, colorPsi2S, markerCMS);
+	auto* statPsi2S_cms = myStatGraph(title, nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, fracPsi2SToJpsi_cms, statPsi2SToJpsi_cms, colorPsi2S + 1, markerCMS);
 
 	statPsi2S_cms->Draw("PZ");
 
-	auto* systPsi2S_cms = mySystGraph(nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, xErrorWidth, fracPsi2SToJpsi_cms, systPsi2SToJpsi_cms, colorPsi2S);
+	auto* systPsi2S_cms = mySystGraph(nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, xErrorWidth, fracPsi2SToJpsi_cms, systPsi2SToJpsi_cms, colorPsi2S + 1);
 
 	systPsi2S_cms->Draw("5");
 
 	/// legend
 
-	if (!withLegend) drawHeaderLegend("7 and 13 TeV pp data", .18, .9);
+	//if (!withLegend) drawHeaderLegend("7 and 13 TeV pp data", .18, .9);
 
 	auto* legend = new TLegend(.17, .92, .35, .7, "Feed-down to prompt J/#psi from");
 	legend->AddEntry(statChic_lhcb, "#chi_{c}(1P), LHCb 7 TeV", "p");

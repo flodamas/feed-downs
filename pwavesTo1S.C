@@ -50,9 +50,9 @@ void pwavesTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	auto* statChic_lhcb =
 	  statAsymmGraph(title, nPoints_chic_lhcb7TeV, ptBinning_chicToJpsi_lhcb7TeV, fracChicToJpsi, downStat_fracChicToJpsi, upStat_fracChicToJpsi, colorChic, marker1P);
 
-	statChic_lhcb->SetMinimum(0);
+	statChic_lhcb->SetMinimum(10);
 	statChic_lhcb->SetMaximum(40);
-	statChic_lhcb->GetXaxis()->SetLimits(0, 40);
+	statChic_lhcb->GetXaxis()->SetLimits(0, 45);
 
 	if (withLogYaxis) {
 		statChic_lhcb->SetMinimum(.4);
@@ -69,7 +69,7 @@ void pwavesTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	Float_t ptScaled_chic_lhcb7TeV[nPoints_chic_lhcb7TeV + 1];
 
-	for (Int_t i = 0; i <= nPoints_chic_lhcb7TeV; i++) ptScaled_chic_lhcb7TeV[i] = 2.8 * ptBinning_chicToJpsi_lhcb7TeV[i];
+	for (Int_t i = 0; i <= nPoints_chic_lhcb7TeV; i++) ptScaled_chic_lhcb7TeV[i] = 3.0 * ptBinning_chicToJpsi_lhcb7TeV[i];
 
 	auto* statScaledChic_lhcb =
 	  statAsymmGraph(title, nPoints_chic_lhcb7TeV, ptScaled_chic_lhcb7TeV, fracChicToJpsi, downStat_fracChicToJpsi, upStat_fracChicToJpsi, kGray + 2, marker1P);
@@ -99,16 +99,16 @@ void pwavesTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	auto* syst2Pto1S =
 	  mySystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_lhcb8TeV, syst2Pto1S_lhcb8TeV, color2P);
 
-	stat2Pto1S->Draw("PZ");
-	syst2Pto1S->Draw("5");
+	//stat2Pto1S->Draw("PZ");
+	//	syst2Pto1S->Draw("5");
 
 	auto* stat3Pto1S =
 	  myStatGraph(title, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, frac3Pto1S_lhcb8TeV, stat3Pto1S_lhcb8TeV, color3P, marker2P);
 
 	auto* syst3Pto1S = mySystGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, frac3Pto1S_lhcb8TeV, syst3Pto1S_lhcb8TeV, color3P);
 
-	stat3Pto1S->Draw("PZ");
-	syst3Pto1S->Draw("5");
+	//stat3Pto1S->Draw("PZ");
+	//syst3Pto1S->Draw("5");
 
 	/// legend
 
@@ -121,8 +121,8 @@ void pwavesTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		drawLegend(statChic_lhcb, "#chi_{c}(1P) #rightarrow J/#psi", xHeader, y1, "p");
 		drawLegend(statScaledChic_lhcb, "#it{p}_{T} scaled", xHeader, y1 - .06, "p");
 		drawLegend(stat1Pto1S, "#chi_{b}(1P) #rightarrow #varUpsilon(1S)", x2, y1, "p");
-		drawLegend(stat2Pto1S, "#chi_{b}(2P) #rightarrow #varUpsilon(1S)", x2, y2, "p");
-		drawLegend(stat3Pto1S, "#chi_{b}(3P) #rightarrow #varUpsilon(1S)", x2, y3, "p");
+		//drawLegend(stat2Pto1S, "#chi_{b}(2P) #rightarrow #varUpsilon(1S)", x2, y2, "p");
+		//drawLegend(stat3Pto1S, "#chi_{b}(3P) #rightarrow #varUpsilon(1S)", x2, y3, "p");
 	}
 
 	canv->SaveAs("figures/pwaveTo1S.png", "RECREATE");

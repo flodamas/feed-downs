@@ -93,8 +93,17 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	Float_t extFD_2Pto2S[nPoints2Pto1S_lhcb], statExtFD_2Pto2S[nPoints2Pto1S_lhcb], systExtFD_2Pto2S[nPoints2Pto1S_lhcb];
 
+	Float_t br2P_Jequal1_to2S = br2P_Jequal1_to2Sgamma;
+	Float_t br2P_Jequal2_to2S = br2P_Jequal2_to2Sgamma;
+
+	Float_t br2P_Jequal1_to1S = br2P_Jequal1_to1Sgamma + br2P_Jequal1_to1Somega;
+	Float_t br2P_Jequal2_to1S = br2P_Jequal2_to1Sgamma + br2P_Jequal2_to1Somega;
+
 	for (Int_t i = 0; i < nPoints2Pto1S_lhcb; i++) {
-		extFD_2Pto2S[i] = (frac2Pto1S_lhcb8TeV[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * ((br2P_Jequal1_to2Sgamma + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to2Sgamma) / (br2P_Jequal1_to1Sgamma + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to1Sgamma));
+		// with Lansberg's formula
+		//extFD_2Pto2S[i] = (frac2Pto1S_lhcb8TeV[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * (br2P_to2Sall / br2P_to1Sall);
+
+		extFD_2Pto2S[i] = (frac2Pto1S_lhcb8TeV[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * ((br2P_Jequal1_to2S + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to2S) / (br2P_Jequal1_to1S + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to1S));
 
 		statExtFD_2Pto2S[i] = extFD_2Pto2S[i] * TMath::Hypot(stat2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i], stat2Sto1S[i] / ratio2Sto1S[i]);
 
@@ -129,6 +138,9 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	Float_t extFD_3Pto2S[nPoints3Pto1S_lhcb], statExtFD_3Pto2S[nPoints3Pto1S_lhcb], systExtFD_3Pto2S[nPoints3Pto1S_lhcb];
 
 	for (Int_t i = 0; i < nPoints3Pto1S_lhcb; i++) {
+		// with Lansberg's formula
+		//extFD_3Pto2S[i] = (frac3Pto1S_lhcb8TeV[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * (br3P_to2Sall / br3P_to1Sall);
+
 		extFD_3Pto2S[i] = (frac3Pto1S_lhcb8TeV[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * ((br3P_Jequal1_to2Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to2Sgamma) / (br3P_Jequal1_to1Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to1Sgamma));
 
 		statExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(stat3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i], stat3Sto1S[i] / ratio3Sto1S[i]);

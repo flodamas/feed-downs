@@ -1,5 +1,5 @@
 TCanvas* myCanvas(const char* name) {
-	auto* c = new TCanvas(name, "", 700, 600);
+	auto* c = new TCanvas(name, "", 800, 600);
 	c->SetFillColor(0);
 	return c;
 }
@@ -61,15 +61,15 @@ TGraphErrors* mySystGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth
 	return graph;
 }
 
-TGraphAsymmErrors* statAsymmGraph(const char* title, Int_t nPoints, Float_t xBinning[], Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed, Int_t markerStyle = 20) {
-	Float_t x[nPoints], xErr[nPoints];
+TGraphAsymmErrors* statAsymmGraph(const char* title, Int_t nPoints, Float_t xMean[], Float_t xBinning[], Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed, Int_t markerStyle = 20) {
+	Float_t xErrMinus[nPoints], xErrPlus[nPoints];
 
 	for (Int_t i = 0; i < nPoints; i++) {
-		x[i] = (xBinning[i + 1] + xBinning[i]) / 2;
-		xErr[i] = (xBinning[i + 1] - xBinning[i]) / 2;
+		xErrMinus[i] = (xMean[i] - xBinning[i]);
+		xErrPlus[i] = (xBinning[i + 1] - xMean[i]);
 	}
 
-	auto* graph = new TGraphAsymmErrors(nPoints, x, y, xErr, xErr, yErrMinus, yErrPlus);
+	auto* graph = new TGraphAsymmErrors(nPoints, xMean, y, xErrMinus, xErrPlus, yErrMinus, yErrPlus);
 
 	graph->SetTitle(title);
 	graph->SetMarkerStyle(markerStyle);
@@ -82,15 +82,14 @@ TGraphAsymmErrors* statAsymmGraph(const char* title, Int_t nPoints, Float_t xBin
 	return graph;
 }
 
-TGraphAsymmErrors* systAsymmGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth, Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed, Int_t markerStyle = 20) {
-	Float_t x[nPoints], xErr[nPoints];
+TGraphAsymmErrors* systAsymmGraph(Int_t nPoints, Float_t xMean[], Float_t xErrorWidth, Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed) {
+	Float_t xErr[nPoints];
 
 	for (Int_t i = 0; i < nPoints; i++) {
-		x[i] = (xBinning[i + 1] + xBinning[i]) / 2;
 		xErr[i] = xErrorWidth;
 	}
 
-	auto* graph = new TGraphAsymmErrors(nPoints, x, y, xErr, xErr, yErrMinus, yErrPlus);
+	auto* graph = new TGraphAsymmErrors(nPoints, xMean, y, xErr, xErr, yErrMinus, yErrPlus);
 
 	graph->SetLineWidth(0);
 	graph->SetFillStyle(1001);

@@ -22,6 +22,9 @@ Float_t systPsi2StoJpsianything = 0.6; // i.e. 1% relative
 Float_t brPsi2StoJpsipipluspiminus = 34.68;
 Float_t systPsi2StoJpsipipluspiminus = 0.30; // i.e. 0.9% relative
 
+Float_t brPsi2StoJpsineutrals = 25.38;
+Float_t systPsi2StoJpsineutrals = 0.32;
+
 // to chi_c(1P)
 Float_t brPsi2Sto1P_Jequal0 = 9.79;
 Float_t systPsi2Sto1P_Jequal0 = 0.20;

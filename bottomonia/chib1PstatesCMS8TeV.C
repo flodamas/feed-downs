@@ -18,4 +18,9 @@ Float_t syst_ratio2to1_chib1P_cms8TeV[] = {.06, .04, .04, .05};
 
 const Float_t ratio2to1_chib1P_CMSaverage = 0.85;
 
-const Float_t systRatio2to1_chib1P_CMSaverage = 0.07;
+const Float_t systRatio2to1_chib1P_CMSaverage = 0.07; // i.e. 8.2% relative
+
+const Float_t brSystRatio2to1_chib1P_CMSaverage = 0.08;
+
+const Float_t ratio2over1 = ratio2to1_chib1P_CMSaverage * (19.1 / 33.9);
+const Float_t systRatio2over1 = ratio2over1 * (systRatio2to1_chib1P_CMSaverage / ratio2to1_chib1P_CMSaverage);

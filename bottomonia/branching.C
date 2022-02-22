@@ -172,7 +172,7 @@ Float_t syst2P_Jequal0_to1Somega_Belle = 0.08;
 // if the triplet is not resolved
 const Float_t br2P_to2Sall = br2P_Jequal2_to2Sgamma + br2P_Jequal1_to2Sgamma + br2P_Jequal0_to2Sgamma;
 
-const Float_t br2P_to1Sall = br2P_Jequal2_to1Sgamma + br2P_Jequal2_to1Somega_Belle + br2P_Jequal1_to1Sgamma + br2P_Jequal1_to1Somega_Belle + br2P_Jequal0_to1Sgamma + br2P_Jequal0_to1Somega_Belle;
+const Float_t br2P_to1Sall = br2P_Jequal2_to1Sgamma + br2P_Jequal2_to1Somega + br2P_Jequal1_to1Sgamma + br2P_Jequal1_to1Somega + br2P_Jequal0_to1Sgamma + br2P_Jequal0_to1Somega_Belle;
 
 // predicted values from NRQCD (table 2 in https://arxiv.org/pdf/1410.8537.pdf)
 

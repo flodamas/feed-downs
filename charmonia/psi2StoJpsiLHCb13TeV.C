@@ -3,7 +3,7 @@ Ratios of production cross-sections at 13 TeV between ψ(2S) mesons and J/ψ mes
 
 LHCb data at 13 TeV https://inspirehep.net/literature/1748712
 
-already corrected for branching fractions
+already corrected for dimuon branching fractions
 
 */
 
