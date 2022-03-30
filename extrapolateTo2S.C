@@ -42,12 +42,11 @@ Float_t syst3Sto1S[] = {.013, .011, .012, .012};
 
 void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	// Feed-downs to Y(2S)
-	auto* canv2S = myCanvas("canv2S");
+	auto* canv = myCanvas("canv");
 
-	if (withLogYaxis) canv2S->SetLogy();
+	if (withLogYaxis) canv->SetLogy();
 
-	const char* title2S =
-	  ";#it{p}_{T}^{#varUpsilon(2S)} (GeV);Feed-down fractions to #varUpsilon(2S) (in %)";
+	const char* title = ";#it{p}_{T}^{#varUpsilon(2S)} (GeV);Feed-down fractions to #varUpsilon(2S) (in %)";
 
 	/// Y(2S) CMS measurements
 	const Int_t nPoints_cms = sizeof(ptBinning_cms7TeV) / sizeof(Float_t) - 1;
@@ -63,7 +62,7 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 		syst3Sto2S_cms[i] = frac3Sto2S_cms[i] * systPerc_3Sto1S_cms7TeV[i] / 100.; // should be good
 	}
 
-	auto* statGraph_cms3Sto2S = myStatGraph(title2S, nPoints_cms, ptBinning_cms7TeV, frac3Sto2S_cms, stat3Sto2S_cms, color3Sto2S_, markerCMS);
+	auto* statGraph_cms3Sto2S = myStatGraph(title, nPoints_cms, ptBinning_cms7TeV, frac3Sto2S_cms, stat3Sto2S_cms, color3Sto2S_, markerCMS);
 
 	statGraph_cms3Sto2S->SetMaximum((withLegend) ? 50 : 45);
 	statGraph_cms3Sto2S->GetXaxis()->SetLimits(0, 40);
@@ -77,10 +76,10 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	// direct measurements
 	auto* directStat2Pto2S =
-	  myStatGraph(title2S, nPoints2Pto2S_lhcb, ptBinning2Pto2S_lhcb, frac2Pto2S_lhcb8TeV, stat2Pto2S_lhcb8TeV, color2P, marker3P);
+	  myStatGraph(title, nPoints2Pto2S_lhcb, ptBinning2Pto2S_lhcb, frac2Pto2S_weightedLHCb, stat2Pto2S_weightedLHCb, color2P, marker3P);
 
 	auto* directSyst2Pto2S =
-	  mySystGraph(nPoints2Pto2S_lhcb, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_lhcb8TeV, syst2Pto2S_lhcb8TeV, color2P);
+	  systAsymmGraph(nPoints2Pto2S_lhcb, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_weightedLHCb, syst2Pto2S_weightedLHCb, syst2Pto2S_weightedLHCb, color2P);
 
 	directStat2Pto2S->SetMinimum(0);
 	directStat2Pto2S->SetMaximum((withLegend) ? 60 : 45);
@@ -101,17 +100,17 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	for (Int_t i = 0; i < nPoints2Pto1S_lhcb; i++) {
 		// with Lansberg's formula
-		//extFD_2Pto2S[i] = (frac2Pto1S_lhcb8TeV[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * (br2P_to2Sall / br2P_to1Sall);
+		//extFD_2Pto2S[i] = (frac2Pto1S_weightedLHCb[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * (br2P_to2Sall / br2P_to1Sall);
 
-		extFD_2Pto2S[i] = (frac2Pto1S_lhcb8TeV[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * ((br2P_Jequal1_to2S + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to2S) / (br2P_Jequal1_to1S + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to1S));
+		extFD_2Pto2S[i] = (frac2Pto1S_weightedLHCb[i] / (ratio2Sto1S[i] * br1Stomumu / br2Stomumu)) * ((br2P_Jequal1_to2S + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to2S) / (br2P_Jequal1_to1S + ratio2to1_chib1P_CMSaverage * br2P_Jequal2_to1S));
 
-		statExtFD_2Pto2S[i] = extFD_2Pto2S[i] * TMath::Hypot(stat2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i], stat2Sto1S[i] / ratio2Sto1S[i]);
+		statExtFD_2Pto2S[i] = extFD_2Pto2S[i] * TMath::Hypot(stat2Pto1S_weightedLHCb[i] / frac2Pto1S_weightedLHCb[i], stat2Sto1S[i] / ratio2Sto1S[i]);
 
-		systExtFD_2Pto2S[i] = extFD_2Pto2S[i] * TMath::Hypot(syst2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i], syst2Sto1S[i] / ratio2Sto1S[i]);
+		systExtFD_2Pto2S[i] = extFD_2Pto2S[i] * TMath::Hypot(syst2Pto1S_weightedLHCb[i] / frac2Pto1S_weightedLHCb[i], syst2Sto1S[i] / ratio2Sto1S[i]);
 	}
 
 	auto* extStat2Pto2S =
-	  myStatGraph(title2S, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, extFD_2Pto2S, statExtFD_2Pto2S, color2P + 1, marker2P + 4);
+	  myStatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, extFD_2Pto2S, statExtFD_2Pto2S, color2P + 1, marker2P + 4);
 
 	extStat2Pto2S->Draw("PZ");
 
@@ -125,36 +124,38 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	// direct measurements
 
 	auto* directStat3Pto2S =
-	  myStatGraph(title2S, nPoints3Pto2S_lhcb, ptBinning3Pto2S_lhcb, frac3Pto2S_lhcb8TeV, stat3Pto2S_lhcb8TeV, color3P, marker3P);
+	  myStatGraph(title, nPoints3Pto2S_lhcb, ptBinning3Pto2S_lhcb, frac3Pto2S_weightedLHCb, stat3Pto2S_weightedLHCb, color3P, marker3P);
 
 	auto* directSyst3Pto2S =
-	  mySystGraph(nPoints3Pto2S_lhcb, ptBinning3Pto2S_lhcb, xErrorWidth, frac3Pto2S_lhcb8TeV, syst3Pto2S_lhcb8TeV, color3P);
+	  mySystGraph(nPoints3Pto2S_lhcb, ptBinning3Pto2S_lhcb, xErrorWidth, frac3Pto2S_weightedLHCb, syst3Pto2S_weightedLHCb, color3P);
 
 	directStat3Pto2S->Draw("PZ");
 	directSyst3Pto2S->Draw("5");
 
 	// extrapolate with chi_b(3P) -> Y(1S) FD measurements
 
-	Float_t extFD_3Pto2S[nPoints3Pto1S_lhcb], statExtFD_3Pto2S[nPoints3Pto1S_lhcb], systExtFD_3Pto2S[nPoints3Pto1S_lhcb];
+	Float_t extFD_3Pto2S[nPoints3Pto1S_lhcb], statExtFD_3Pto2S[nPoints3Pto1S_lhcb], upSystExtFD_3Pto2S[nPoints3Pto1S_lhcb], downSystExtFD_3Pto2S[nPoints3Pto1S_lhcb];
 
 	for (Int_t i = 0; i < nPoints3Pto1S_lhcb; i++) {
 		// with Lansberg's formula
-		//extFD_3Pto2S[i] = (frac3Pto1S_lhcb8TeV[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * (br3P_to2Sall / br3P_to1Sall);
+		//extFD_3Pto2S[i] = (frac3Pto1S_weightedLHCb[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * (br3P_to2Sall / br3P_to1Sall);
 
-		extFD_3Pto2S[i] = (frac3Pto1S_lhcb8TeV[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * ((br3P_Jequal1_to2Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to2Sgamma) / (br3P_Jequal1_to1Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to1Sgamma));
+		extFD_3Pto2S[i] = (frac3Pto1S_weightedLHCb[i] / (ratio3Sto1S[i] * br1Stomumu / br3Stomumu)) * ((br3P_Jequal1_to2Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to2Sgamma) / (br3P_Jequal1_to1Sgamma + ratio2to1_chib1P_CMSaverage * br3P_Jequal2_to1Sgamma));
 
-		statExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(stat3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i], stat3Sto1S[i] / ratio3Sto1S[i]);
+		statExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(stat3Pto1S_lhcb8TeV[i] / frac3Pto1S_weightedLHCb[i], stat3Sto1S[i] / ratio3Sto1S[i]);
 
-		systExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(syst3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i], syst3Sto1S[i] / ratio3Sto1S[i]);
+		upSystExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(syst3Pto1S_weightedLHCb[i] / frac3Pto1S_weightedLHCb[i], syst3Sto1S[i] / ratio3Sto1S[i]);
+
+		downSystExtFD_3Pto2S[i] = extFD_3Pto2S[i] * TMath::Hypot(syst3Pto1S_weightedLHCb[i] / frac3Pto1S_weightedLHCb[i], syst3Sto1S[i] / ratio3Sto1S[i]);
 	}
 
 	auto* extStat3Pto2S =
-	  myStatGraph(title2S, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, extFD_3Pto2S, statExtFD_3Pto2S, color3P - 1, marker2P + 4);
+	  myStatGraph(title, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, extFD_3Pto2S, statExtFD_3Pto2S, color3P - 1, marker2P + 4);
 
 	extStat3Pto2S->Draw("PZ");
 
 	auto* extSyst3Pto2S =
-	  mySystGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, extFD_3Pto2S, systExtFD_3Pto2S, color3P);
+	  systAsymmGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, extFD_3Pto2S, downSystExtFD_3Pto2S, upSystExtFD_3Pto2S, color3P);
 
 	extSyst3Pto2S->Draw("5");
 
@@ -176,8 +177,8 @@ void extrapolateTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 
 	drawHeaderLegend(Form("#it{R}_{21} = %.2f #pm %.2f", ratio2to1_chib1P_CMSaverage, systRatio2to1_chib1P_CMSaverage), xChib, .6);
 
-	canv2S->SaveAs("figures/extrapolate_FDto2S.png", "RECREATE");
-	canv2S->Close();
+	canv->SaveAs("figures/extrapolate_FDto2S.png", "RECREATE");
+	canv->Close();
 
 	//
 

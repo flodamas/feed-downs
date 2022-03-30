@@ -36,10 +36,10 @@ void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
 	Int_t nPoints1P = nPoints1Pto1S_lhcb;
 
 	auto* stat1Pto1S =
-	  myStatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_lhcb8TeV, stat1Pto1S_lhcb8TeV, color1P, marker2P);
+	  myStatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_weightedLHCb, stat1Pto1S_weightedLHCb, color1P, marker2P);
 
 	auto* syst1Pto1S =
-	  mySystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_lhcb8TeV, syst1Pto1S_lhcb8TeV, color1P - 1);
+	  mySystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_weightedLHCb, syst1Pto1S_weightedLHCb, color1P - 1);
 
 	stat1Pto1S->SetMinimum(0);
 	stat1Pto1S->SetMaximum(40);
@@ -60,18 +60,18 @@ void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
 
 	for (Int_t i = 0; i < nPoints1P; i++) {
 		// J = 1
-		frac1Pto1S_Jequal1[i] = frac1Pto1S_lhcb8TeV[i] / (1. + ratio2over1);
+		frac1Pto1S_Jequal1[i] = frac1Pto1S_weightedLHCb[i] / (1. + ratio2over1);
 
-		stat1Pto1S_Jequal1[i] = frac1Pto1S_Jequal1[i] * (stat1Pto1S_lhcb8TeV[i] / frac1Pto1S_lhcb8TeV[i]);
+		stat1Pto1S_Jequal1[i] = frac1Pto1S_Jequal1[i] * (stat1Pto1S_weightedLHCb[i] / frac1Pto1S_weightedLHCb[i]);
 
-		syst1Pto1S_Jequal1[i] = frac1Pto1S_Jequal1[i] * (syst1Pto1S_lhcb8TeV[i] / frac1Pto1S_lhcb8TeV[i]);
+		syst1Pto1S_Jequal1[i] = frac1Pto1S_Jequal1[i] * (syst1Pto1S_weightedLHCb[i] / frac1Pto1S_weightedLHCb[i]);
 
 		// J = 2
-		frac1Pto1S_Jequal2[i] = frac1Pto1S_lhcb8TeV[i] - frac1Pto1S_Jequal1[i];
+		frac1Pto1S_Jequal2[i] = frac1Pto1S_weightedLHCb[i] - frac1Pto1S_Jequal1[i];
 
-		stat1Pto1S_Jequal2[i] = frac1Pto1S_Jequal2[i] * (stat1Pto1S_lhcb8TeV[i] / frac1Pto1S_lhcb8TeV[i]);
+		stat1Pto1S_Jequal2[i] = frac1Pto1S_Jequal2[i] * (stat1Pto1S_weightedLHCb[i] / frac1Pto1S_weightedLHCb[i]);
 
-		syst1Pto1S_Jequal2[i] = frac1Pto1S_Jequal2[i] * (syst1Pto1S_lhcb8TeV[i] / frac1Pto1S_lhcb8TeV[i]);
+		syst1Pto1S_Jequal2[i] = frac1Pto1S_Jequal2[i] * (syst1Pto1S_weightedLHCb[i] / frac1Pto1S_weightedLHCb[i]);
 	}
 
 	auto* statGraph1Pto1S_Jequal1 = myStatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_Jequal1, stat1Pto1S_Jequal1, kPink + 6, marker2P);
@@ -88,9 +88,9 @@ void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
 
 	/// Chi_b(2P)
 
-	auto* stat2Pto1S = myStatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_lhcb8TeV, stat2Pto1S_lhcb8TeV, color2P, marker2P);
+	auto* stat2Pto1S = myStatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_weightedLHCb, stat2Pto1S_weightedLHCb, color2P, marker2P);
 
-	auto* syst2Pto1S = mySystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_lhcb8TeV, syst2Pto1S_lhcb8TeV, color2P);
+	auto* syst2Pto1S = mySystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_weightedLHCb, syst2Pto1S_weightedLHCb, color2P);
 
 	//stat2Pto1S->Draw("PZ");
 	//syst2Pto1S->Draw("5");

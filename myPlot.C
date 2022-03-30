@@ -1,5 +1,5 @@
-TCanvas* myCanvas(const char* name) {
-	auto* c = new TCanvas(name, "", 800, 600);
+TCanvas* myCanvas(const char* name, Int_t width = 700, Int_t height = 600) {
+	auto* c = new TCanvas(name, "", width, height);
 	c->SetFillColor(0);
 	return c;
 }
@@ -41,8 +41,7 @@ TGraphErrors* myStatGraph(const char* title, Int_t nPoints, Float_t xBinning[], 
 	return graph;
 }
 
-TGraphErrors* mySystGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth, Float_t y[],
-                          Float_t yErr[], Color_t color = kRed) {
+TGraphErrors* mySystGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth, Float_t y[], Float_t yErr[], Color_t color = kRed) {
 	Float_t x[nPoints], xErr[nPoints];
 
 	for (Int_t i = 0; i < nPoints; i++) {
@@ -82,7 +81,26 @@ TGraphAsymmErrors* statAsymmGraph(const char* title, Int_t nPoints, Float_t xMea
 	return graph;
 }
 
-TGraphAsymmErrors* systAsymmGraph(Int_t nPoints, Float_t xMean[], Float_t xErrorWidth, Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed) {
+TGraphAsymmErrors* systAsymmGraph(Int_t nPoints, Float_t xBinning[], Float_t xErrorWidth, Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed) {
+	Float_t x[nPoints], xErr[nPoints];
+
+	for (Int_t i = 0; i < nPoints; i++) {
+		x[i] = (xBinning[i + 1] + xBinning[i]) / 2;
+		xErr[i] = xErrorWidth;
+	}
+
+	auto* graph = new TGraphAsymmErrors(nPoints, x, y, xErr, xErr, yErrMinus, yErrPlus);
+
+	graph->SetLineWidth(0);
+	graph->SetFillStyle(1001);
+	graph->SetLineColor(color); // box
+	//graph->SetFillColor(color);
+	graph->SetFillColorAlpha(color, .4);
+
+	return graph;
+}
+
+TGraphAsymmErrors* systDoubleAsymmGraph(Int_t nPoints, Float_t xMean[], Float_t xErrorWidth, Float_t y[], Float_t yErrMinus[], Float_t yErrPlus[], Color_t color = kRed) {
 	Float_t xErr[nPoints];
 
 	for (Int_t i = 0; i < nPoints; i++) {
@@ -95,7 +113,7 @@ TGraphAsymmErrors* systAsymmGraph(Int_t nPoints, Float_t xMean[], Float_t xError
 	graph->SetFillStyle(1001);
 	graph->SetLineColor(color); // box
 	//graph->SetFillColor(color);
-	graph->SetFillColorAlpha(color, .4);
+	graph->SetFillColorAlpha(color, .5);
 
 	return graph;
 }

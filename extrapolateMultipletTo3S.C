@@ -42,7 +42,7 @@ void extrapolateMultipletTo3S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 
 	/// Chi_b(3P)
 
-	// first, separate the X(2P)-> Y(1S) multiplet
+	// first, separate the X(3P)-> Y(1S) multiplet
 
 	Int_t nPoints3Pto1S = nPoints3Pto1S_lhcb;
 
@@ -51,18 +51,18 @@ void extrapolateMultipletTo3S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 
 	for (Int_t i = 0; i < nPoints3Pto1S; i++) {
 		// J = 1
-		frac3Pto1S_Jequal1[i] = frac3Pto1S_lhcb8TeV[i] / (1. + ratio2to1_chib1P_CMSaverage * (br3P_Jequal2_to1Sgamma / br3P_Jequal1_to1Sgamma));
+		frac3Pto1S_Jequal1[i] = frac3Pto1S_weightedLHCb[i] / (1. + ratio2to1_chib1P_CMSaverage * (br3P_Jequal2_to1Sgamma / br3P_Jequal1_to1Sgamma));
 
-		stat3Pto1S_Jequal1[i] = frac3Pto1S_Jequal1[i] * (stat3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i]);
+		stat3Pto1S_Jequal1[i] = frac3Pto1S_Jequal1[i] * (stat3Pto1S_weightedLHCb[i] / frac3Pto1S_weightedLHCb[i]);
 
-		syst3Pto1S_Jequal1[i] = frac3Pto1S_Jequal1[i] * (syst3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i]);
+		syst3Pto1S_Jequal1[i] = frac3Pto1S_Jequal1[i] * (syst3Pto1S_weightedLHCb[i] / frac3Pto1S_weightedLHCb[i]);
 
 		// J = 2
-		frac3Pto1S_Jequal2[i] = frac3Pto1S_lhcb8TeV[i] * (1 - 1. / (1. + ratio2to1_chib1P_CMSaverage * (br3P_Jequal2_to1Sgamma / br3P_Jequal1_to1Sgamma)));
+		frac3Pto1S_Jequal2[i] = frac3Pto1S_weightedLHCb[i] - frac3Pto1S_Jequal1[i];
 
-		stat3Pto1S_Jequal2[i] = frac3Pto1S_Jequal2[i] * (stat3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i]);
+		stat3Pto1S_Jequal2[i] = frac3Pto1S_Jequal2[i] * (stat3Pto1S_weightedLHCb[i] / frac3Pto1S_weightedLHCb[i]);
 
-		syst3Pto1S_Jequal2[i] = frac3Pto1S_Jequal2[i] * (syst3Pto1S_lhcb8TeV[i] / frac3Pto1S_lhcb8TeV[i]);
+		syst3Pto1S_Jequal2[i] = frac3Pto1S_Jequal2[i] * (syst3Pto1S_weightedLHCb[i] / frac3Pto1S_weightedLHCb[i]);
 	}
 
 	// separate the X(3P)-> Y(3S) multiplet
@@ -74,18 +74,18 @@ void extrapolateMultipletTo3S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 
 	for (Int_t i = 0; i < nPoints3Pto3S; i++) {
 		// J = 1
-		frac3Pto3S_Jequal1[i] = frac3Pto3S_lhcb8TeV[i] / (1. + ratio2to1_chib1P_CMSaverage * (br3P_Jequal2_to3Sgamma / br3P_Jequal1_to3Sgamma));
+		frac3Pto3S_Jequal1[i] = frac3Pto3S_weightedLHCb[i] / (1. + ratio2to1_chib1P_CMSaverage * (br3P_Jequal2_to3Sgamma / br3P_Jequal1_to3Sgamma));
 
-		stat3Pto3S_Jequal1[i] = frac3Pto3S_Jequal1[i] * (stat3Pto3S_lhcb8TeV[i] / frac3Pto3S_lhcb8TeV[i]);
+		stat3Pto3S_Jequal1[i] = frac3Pto3S_Jequal1[i] * (stat3Pto3S_weightedLHCb[i] / frac3Pto3S_weightedLHCb[i]);
 
-		syst3Pto3S_Jequal1[i] = frac3Pto3S_Jequal1[i] * (syst3Pto3S_lhcb8TeV[i] / frac3Pto3S_lhcb8TeV[i]);
+		syst3Pto3S_Jequal1[i] = frac3Pto3S_Jequal1[i] * (syst3Pto3S_weightedLHCb[i] / frac3Pto3S_weightedLHCb[i]);
 
 		// J = 2
-		frac3Pto3S_Jequal2[i] = frac3Pto3S_lhcb8TeV[i] * (1 - 1. / (1. + ratio2to1_chib1P_CMSaverage * (br3P_Jequal2_to3Sgamma / br3P_Jequal1_to3Sgamma)));
+		frac3Pto3S_Jequal2[i] = frac3Pto3S_weightedLHCb[i] - frac3Pto3S_Jequal1[i];
 
-		stat3Pto3S_Jequal2[i] = frac3Pto3S_Jequal2[i] * (stat3Pto3S_lhcb8TeV[i] / frac3Pto3S_lhcb8TeV[i]);
+		stat3Pto3S_Jequal2[i] = frac3Pto3S_Jequal2[i] * (stat3Pto3S_weightedLHCb[i] / frac3Pto3S_weightedLHCb[i]);
 
-		syst3Pto3S_Jequal2[i] = frac3Pto3S_Jequal2[i] * (syst3Pto3S_lhcb8TeV[i] / frac3Pto3S_lhcb8TeV[i]);
+		syst3Pto3S_Jequal2[i] = frac3Pto3S_Jequal2[i] * (syst3Pto3S_weightedLHCb[i] / frac3Pto3S_weightedLHCb[i]);
 	}
 
 	auto* statGraph3Pto3S_Jequal1 = myStatGraph(title, nPoints3Pto3S, ptBinning3Pto3S_lhcb, frac3Pto3S_Jequal1, stat3Pto3S_Jequal1, color2P, marker2P);
@@ -163,9 +163,9 @@ void extrapolateMultipletTo3S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 	drawLegend(extStat3Pto3S_Jequal1, "derived from #chi_{b,1}(3P) #rightarrow #varUpsilon(1S)", xExtrap, yJequal1, "pl");
 
 	drawLegend(statGraph3Pto3S_Jequal2, "#chi_{b,2}(3P)", xChib, yJequal2, "pl");
-	drawLegend(extStat3Pto3S_Jequal2, "derived from #chi_{b,1}(3P) #rightarrow #varUpsilon(1S)", xExtrap, yJequal2, "pl");
+	drawLegend(extStat3Pto3S_Jequal2, "derived from #chi_{b,2}(3P) #rightarrow #varUpsilon(1S)", xExtrap, yJequal2, "pl");
 
-	drawHeaderLegend(Form("#it{R}_{21} = %.2f #pm %.2f", ratio2over1, systRatio2over1), xChib, .6);
+	drawHeaderLegend(Form("#it{R}_{21} = %.2f #pm %.2f", ratio2to1_chib1P_CMSaverage, systRatio2to1_chib1P_CMSaverage), xChib, .6);
 
 	canv->SaveAs("figures/extrapolateMultiplet_FDto3S.png", "RECREATE");
 	canv->Close();

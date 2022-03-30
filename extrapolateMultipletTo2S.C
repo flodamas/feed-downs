@@ -59,18 +59,18 @@ void extrapolateMultipletTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 
 	for (Int_t i = 0; i < nPoints2Pto1S; i++) {
 		// J = 1
-		frac2Pto1S_Jequal1[i] = frac2Pto1S_lhcb8TeV[i] / (1. + ratio2to1_chib1P_CMSaverage * (br2P_Jequal2_to1Sgamma / br2P_Jequal1_to1Sgamma));
+		frac2Pto1S_Jequal1[i] = frac2Pto1S_weightedLHCb[i] / (1. + ratio2to1_chib1P_CMSaverage * (br2P_Jequal2_to1Sgamma / br2P_Jequal1_to1Sgamma));
 
-		stat2Pto1S_Jequal1[i] = frac2Pto1S_Jequal1[i] * (stat2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i]);
+		stat2Pto1S_Jequal1[i] = frac2Pto1S_Jequal1[i] * (stat2Pto1S_weightedLHCb[i] / frac2Pto1S_weightedLHCb[i]);
 
-		syst2Pto1S_Jequal1[i] = frac2Pto1S_Jequal1[i] * (syst2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i]);
+		syst2Pto1S_Jequal1[i] = frac2Pto1S_Jequal1[i] * (syst2Pto1S_weightedLHCb[i] / frac2Pto1S_weightedLHCb[i]);
 
 		// J = 2
-		frac2Pto1S_Jequal2[i] = frac2Pto1S_lhcb8TeV[i] - frac2Pto1S_Jequal1[i];
+		frac2Pto1S_Jequal2[i] = frac2Pto1S_weightedLHCb[i] - frac2Pto1S_Jequal1[i];
 
-		stat2Pto1S_Jequal2[i] = frac2Pto1S_Jequal2[i] * (stat2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i]);
+		stat2Pto1S_Jequal2[i] = frac2Pto1S_Jequal2[i] * (stat2Pto1S_weightedLHCb[i] / frac2Pto1S_weightedLHCb[i]);
 
-		syst2Pto1S_Jequal2[i] = frac2Pto1S_Jequal2[i] * (syst2Pto1S_lhcb8TeV[i] / frac2Pto1S_lhcb8TeV[i]);
+		syst2Pto1S_Jequal2[i] = frac2Pto1S_Jequal2[i] * (syst2Pto1S_weightedLHCb[i] / frac2Pto1S_weightedLHCb[i]);
 	}
 
 	// separate the X(2P)-> Y(2S) multiplet
@@ -82,18 +82,18 @@ void extrapolateMultipletTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 
 	for (Int_t i = 0; i < nPoints2Pto2S; i++) {
 		// J = 1
-		frac2Pto2S_Jequal1[i] = frac2Pto2S_lhcb8TeV[i] / (1. + ratio2to1_chib1P_CMSaverage * (br2P_Jequal2_to2Sgamma / br2P_Jequal1_to2Sgamma));
+		frac2Pto2S_Jequal1[i] = frac2Pto2S_weightedLHCb[i] / (1. + ratio2to1_chib1P_CMSaverage * (br2P_Jequal2_to2Sgamma / br2P_Jequal1_to2Sgamma));
 
-		stat2Pto2S_Jequal1[i] = frac2Pto2S_Jequal1[i] * (stat2Pto2S_lhcb8TeV[i] / frac2Pto2S_lhcb8TeV[i]);
+		stat2Pto2S_Jequal1[i] = frac2Pto2S_Jequal1[i] * (stat2Pto2S_weightedLHCb[i] / frac2Pto2S_weightedLHCb[i]);
 
-		syst2Pto2S_Jequal1[i] = frac2Pto2S_Jequal1[i] * (syst2Pto2S_lhcb8TeV[i] / frac2Pto2S_lhcb8TeV[i]);
+		syst2Pto2S_Jequal1[i] = frac2Pto2S_Jequal1[i] * (syst2Pto2S_weightedLHCb[i] / frac2Pto2S_weightedLHCb[i]);
 
 		// J = 2
-		frac2Pto2S_Jequal2[i] = frac2Pto2S_lhcb8TeV[i] - frac2Pto2S_Jequal1[i];
+		frac2Pto2S_Jequal2[i] = frac2Pto2S_weightedLHCb[i] - frac2Pto2S_Jequal1[i];
 
-		stat2Pto2S_Jequal2[i] = frac2Pto2S_Jequal2[i] * (stat2Pto2S_lhcb8TeV[i] / frac2Pto2S_lhcb8TeV[i]);
+		stat2Pto2S_Jequal2[i] = frac2Pto2S_Jequal2[i] * (stat2Pto2S_weightedLHCb[i] / frac2Pto2S_weightedLHCb[i]);
 
-		syst2Pto2S_Jequal2[i] = frac2Pto2S_Jequal2[i] * (syst2Pto2S_lhcb8TeV[i] / frac2Pto2S_lhcb8TeV[i]);
+		syst2Pto2S_Jequal2[i] = frac2Pto2S_Jequal2[i] * (syst2Pto2S_weightedLHCb[i] / frac2Pto2S_weightedLHCb[i]);
 	}
 
 	auto* statGraph2Pto2S_Jequal1 = myStatGraph(title, nPoints2Pto2S, ptBinning2Pto2S_lhcb, frac2Pto2S_Jequal1, stat2Pto2S_Jequal1, color2P, marker2P);

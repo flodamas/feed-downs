@@ -46,8 +46,8 @@ void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) 
 	auto* statPsi2S_lhcb = myStatGraph(title, nPointsPsi2S_lhcb, ptBinning_psi2S_lhcb13TeV, fracPsi2SToJpsi_lhcb, errorPsi2SToJpsi_lhcb, myColor, markerLHCb);
 
 	statPsi2S_lhcb->SetMinimum(0);
-	statPsi2S_lhcb->SetMaximum((withLegend) ? 45 : 35);
-	statPsi2S_lhcb->GetXaxis()->SetLimits(0, 40);
+	statPsi2S_lhcb->SetMaximum((withLegend) ? 45 : 45);
+	statPsi2S_lhcb->GetXaxis()->SetLimits(0, 45);
 
 	if (withLogYaxis) {
 		statPsi2S_lhcb->SetMinimum(.4);
@@ -73,11 +73,11 @@ void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) 
 		//systFracCMS_mine[i] = fracCMS_mine[i] * systPercPtRatio_psi2S_cms13TeV[i] / 100.;
 	}
 
-	auto* statCMS_mine = myStatGraph(title, nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, fracCMS_mine, statFracCMS_mine, myColor + 1, markerCMS);
+	auto* statCMS_mine = statAsymmGraph(title, nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, ptBinning_psi2S_cms7TeV, fracCMS_mine, statFracCMS_mine, statFracCMS_mine, myColor + 1, markerCMS);
 
 	statCMS_mine->Draw("PZ");
 
-	auto* systCMS_mine = mySystGraph(nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, xErrorWidth, fracCMS_mine, systFracCMS_mine, myColor + 1);
+	auto* systCMS_mine = systDoubleAsymmGraph(nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, xErrorWidth, fracCMS_mine, systFracCMS_mine, systFracCMS_mine, myColor + 1);
 
 	systCMS_mine->Draw("5");
 
@@ -134,14 +134,14 @@ void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) 
 
 	/// legend
 
-	auto* myLegend = new TLegend(.17, .92, .35, .72, "My results, BR(#psi(2S) #rightarrow J/#psi + anything) = 61.4%");
+	auto* myLegend = new TLegend(.17, .93, .35, .73, "My results, BR(#psi(2S) #rightarrow J/#psi + anything) = 61.4%");
 	myLegend->AddEntry(statPsi2S_lhcb, "prompt, LHCb 13 TeV", "p");
 	myLegend->AddEntry(statCMS_mine, "prompt, CMS 7 TeV (4.90 fb^{#minus 1})", "p");
 	myLegend->Draw();
 
 	auto* hermineLegend = new TLegend(.55, .45, .75, .25, "Hermine's results");
 
-	hermineLegend->AddEntry(statALICE_hermine, "inclusive, ALICE 7 TeV(?)", "p");
+	hermineLegend->AddEntry(statALICE_hermine, "inclusive, ALICE 7 TeV", "p");
 	hermineLegend->AddEntry(statCMS_hermine, "prompt, CMS 7 TeV", "p");
 	hermineLegend->Draw();
 	drawHeaderLegend(Form("reproduced with BR(#psi(2S) #rightarrow J/#psi + neutrals) = %2.1f%%", brHermine), .25, .2);

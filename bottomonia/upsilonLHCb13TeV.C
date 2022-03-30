@@ -178,3 +178,25 @@ Float_t ptDiff_3p0y3p5_3S_lhcb13TeV[] = {7.41, 16.34, 25.14, 27.69, 24.71, 26.25
 Float_t statPtDiff_3p0y3p5_3S_lhcb13TeV[] = {0.78, 1.13, 1.32, 1.31, 1.19, 1.16, 1.06, 0.9, 0.78, 0.67, 0.57, 0.52, 0.44, 0.38, 0.31, 0.3, 0.27, 0.23, 0.21, 0.19, 0.11, 0.1, 0.07, 0.04};
 
 Float_t systPtDiff_3p0y3p5_3S_lhcb13TeV[] = {0.52, 1.16, 1.74, 1.86, 1.65, 1.77, 1.51, 1.32, 1.11, 0.92, 0.69, 0.62, 0.51, 0.4, 0.26, 0.26, 0.21, 0.15, 0.13, 0.11, 0.09, 0.07, 0.04, 0.02};
+
+/// Rapidity-differential cross sections for pT < 15 GeV: https://www.hepdata.net/record/ins1670013?version=1&table=Table%205
+
+// in pb!!!
+
+// Y(1S)
+
+Float_t rapidityDiff_1S_lhcb13TeV[] = {2423.25, 2247.03, 1983.7, 1642.3, 1078.4};
+
+Float_t errorRapidityDiff_1S_lhcb13TeV[] = {152.03, 139.35, 126.82, 119.39, 105.34};
+
+// Y(2S)
+
+Float_t rapidityDiff_2S_lhcb13TeV[] = {593.99, 541.7, 478.03, 395.64, 258.13};
+
+Float_t errorRapidityDiff_2S_lhcb13TeV[] = {36.76, 34.01, 30.59, 29.26, 25.61};
+
+// Y(3S)
+
+Float_t rapidityDiff_3S_lhcb13TeV[] = {291.12, 272.95, 236.19, 191.6, 129.79};
+
+Float_t errorRapidityDiff_3S_lhcb13TeV[] = {19.57, 18.27, 15.9, 14.85, 13.32};

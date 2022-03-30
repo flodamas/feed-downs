@@ -14,11 +14,9 @@ Float_t xErrorWidth = .5;
 const Color_t colorX3872 = kRed + 1;
 
 void psi2SFeedDowns(Bool_t withLegend = kFALSE) {
-	string color = "\033[1;31m";
-
 	auto* canv = myCanvas("canv");
 
-	const char* title = ";#it{p}_{T}^{#psi(2S)} (GeV);Fraction of prompt #psi(2S) from X(3872) (in %)";
+	const char* title = ";#it{p}_{T}^{#psi(2S)} (GeV);Fraction of prompt #psi(2S) from X(3872)";
 
 	// ATLAS measurements
 
@@ -34,7 +32,7 @@ void psi2SFeedDowns(Bool_t withLegend = kFALSE) {
 
 	auto* statGraph_atlas = statAsymmGraph(title, nPtPoints_X3872_atlas8TeV, meanPt_X3872_atlas8TeV, ptBinning_X3872_atlas8TeV, frac_atlas, stat_atlas, stat_atlas, colorX3872, markerATLAS);
 
-	auto* systGraph_atlas = systAsymmGraph(nPtPoints_X3872_atlas8TeV, meanPt_X3872_atlas8TeV, xErrorWidth, frac_atlas, syst_atlas, syst_atlas, colorX3872);
+	auto* systGraph_atlas = systDoubleAsymmGraph(nPtPoints_X3872_atlas8TeV, meanPt_X3872_atlas8TeV, xErrorWidth, frac_atlas, syst_atlas, syst_atlas, colorX3872);
 
 	statGraph_atlas->SetMinimum(0);
 	statGraph_atlas->SetMaximum(10);
@@ -59,9 +57,10 @@ void psi2SFeedDowns(Bool_t withLegend = kFALSE) {
 
 	/// legend
 
-	auto* legend = new TLegend(.17, .92, .35, .72, Form("with BR(X(3872) #rightarrow #psi(2S) + #gamma) = (%1.1f #pm %1.1f)%%", brX3842toPsi2Sgamma, systX3842toPsi2Sgamma));
-	legend->AddEntry(statGraph_atlas, "ATLAS 8 TeV, |y| < 0.75", "p");
-	legend->AddEntry(statGraph_lhcb, "LHCb 8 TeV, 2.0 < y < 4.5", "p");
+	drawHeaderLegend(Form("BR(X(3872) #rightarrow #psi(2S) + #gamma) = (%1.1f #pm %1.1f)%%", brX3842toPsi2Sgamma, systX3842toPsi2Sgamma), .25, .25);
+	auto* legend = new TLegend(.17, .92, .35, .72, "8 TeV pp measurements, J/#psi #pi^{#plus} #pi^{#minus} channel");
+	legend->AddEntry(statGraph_atlas, "ATLAS, |y| < 0.75", "p");
+	legend->AddEntry(statGraph_lhcb, "LHCb, 2.0 < y < 4.5 (dummy values!!!)", "p");
 
 	legend->Draw();
 

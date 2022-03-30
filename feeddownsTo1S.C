@@ -24,24 +24,16 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	string color = "\033[1;31m";
 
 	// Feed-downs to Y(1S)
-	auto* canv1S = myCanvas("canv1S");
+	auto* canv = myCanvas("canv");
 
-	if (withLogYaxis) canv1S->SetLogy();
+	if (withLogYaxis) canv->SetLogy();
 
-	const char* title1S =
-	  ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);Feed-down fractions to #varUpsilon(1S) (in %)";
+	const char* title = ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);Feed-down fractions to #varUpsilon(1S) (in %)";
 
 	// Chi_b(1P) first
 
-	cout << color << endl
-	     << "X_b(1P) -> Y(1S)"
-	     << "\033[0m" << endl;
-
-	for (Int_t i = 0; i < nPoints1Pto1S_lhcb; i++)
-		cout << ptBinning1Pto1S_lhcb[i] << " < pT < " << ptBinning1Pto1S_lhcb[i + 1] << " : " << frac1Pto1S_lhcb8TeV[i] << " +/- " << stat1Pto1S_lhcb8TeV[i] << " +/- " << syst1Pto1S_lhcb8TeV[i] << endl;
-
 	auto* stat1Pto1S =
-	  myStatGraph(title1S, nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, frac1Pto1S_lhcb8TeV, stat1Pto1S_lhcb8TeV, color1P, marker2P);
+	  myStatGraph(title, nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, frac1Pto1S_lhcb8TeV, stat1Pto1S_lhcb8TeV, color1P, marker2P);
 
 	auto* syst1Pto1S =
 	  mySystGraph(nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_lhcb8TeV, syst1Pto1S_lhcb8TeV, color1P - 1);
@@ -61,7 +53,7 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	// Chi_b(2P)
 
 	auto* stat2Pto1S =
-	  myStatGraph(title1S, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_lhcb8TeV, stat2Pto1S_lhcb8TeV, color2P, marker2P);
+	  myStatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_lhcb8TeV, stat2Pto1S_lhcb8TeV, color2P, marker2P);
 
 	auto* syst2Pto1S =
 	  mySystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_lhcb8TeV, syst2Pto1S_lhcb8TeV, color2P);
@@ -69,10 +61,11 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	stat2Pto1S->Draw("PZ");
 	syst2Pto1S->Draw("5");
 
-	auto* stat3Pto1S =
-	  myStatGraph(title1S, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, frac3Pto1S_lhcb8TeV, stat3Pto1S_lhcb8TeV, color3P, marker2P);
+	// Chi_b(3P)
 
-	auto* syst3Pto1S = mySystGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, frac3Pto1S_lhcb8TeV, syst3Pto1S_lhcb8TeV, color3P);
+	auto* stat3Pto1S = myStatGraph(title, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, frac3Pto1S_lhcb8TeV, stat3Pto1S_lhcb8TeV, color3P, marker2P);
+
+	auto* syst3Pto1S = systAsymmGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, frac3Pto1S_lhcb8TeV, upSyst3Pto1S_lhcb8TeV, downSyst3Pto1S_lhcb8TeV, color3P);
 
 	stat3Pto1S->Draw("PZ");
 	syst3Pto1S->Draw("5");
@@ -92,11 +85,11 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		error3Sto1S_lhcb[i] = errorPtDiff_2p0y4p5_3Sto1S_lhcb8TeV[i] * (br1Stomumu / br3Stomumu) * br3Sto1Sanything;
 	}
 
-	auto* stat2Sto1Sgraph_lhcb = myStatGraph(title1S, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac2Sto1S_lhcb, error2Sto1S_lhcb, color2Sto1S, markerLHCb);
+	auto* stat2Sto1Sgraph_lhcb = myStatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac2Sto1S_lhcb, error2Sto1S_lhcb, color2Sto1S, markerLHCb);
 
 	stat2Sto1Sgraph_lhcb->Draw("PZ");
 
-	auto* stat3Sto1Sgraph_lhcb = myStatGraph(title1S, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac3Sto1S_lhcb, error3Sto1S_lhcb, color3Sto1S, markerLHCb);
+	auto* stat3Sto1Sgraph_lhcb = myStatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac3Sto1S_lhcb, error3Sto1S_lhcb, color3Sto1S, markerLHCb);
 
 	stat3Sto1Sgraph_lhcb->Draw("PZ");
 
@@ -123,7 +116,7 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	// Y(2S)-to-Y(1S)
 
-	auto* statGraph_cms2Sto1S = myStatGraph(title1S, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sto1S + 1, markerCMS);
+	auto* statGraph_cms2Sto1S = myStatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sto1S + 1, markerCMS);
 
 	statGraph_cms2Sto1S->Draw("PZ");
 
@@ -133,7 +126,7 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	// Y(3S)-to-Y(1S)
 
-	auto* statGraph_cms3Sto1S = myStatGraph(title1S, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac3Sto1S_cms, stat3Sto1S_cms, color3Sto1S, markerCMS);
+	auto* statGraph_cms3Sto1S = myStatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac3Sto1S_cms, stat3Sto1S_cms, color3Sto1S, markerCMS);
 
 	statGraph_cms3Sto1S->Draw("PZ");
 
@@ -153,8 +146,8 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	legend->AddEntry(stat3Pto1S, "#chi_{b}(3P)", "p");
 	if (withLegend) legend->Draw();
 
-	canv1S->SaveAs("figures/feeddowns_to_1S_8TeV.png", "RECREATE");
-	canv1S->Close();
+	canv->SaveAs("figures/feeddowns_to_1S_8TeV.png", "RECREATE");
+	canv->Close();
 
 	/// print the results, in the order of importance
 
@@ -213,5 +206,5 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	     << "\033[0m" << endl;
 
 	for (Int_t i = 0; i < nPoints3Pto1S_lhcb; i++)
-		cout << ptBinning3Pto1S_lhcb[i] << " < pT < " << ptBinning3Pto1S_lhcb[i + 1] << " : " << frac3Pto1S_lhcb8TeV[i] << " +/- " << stat3Pto1S_lhcb8TeV[i] << " +/- " << syst3Pto1S_lhcb8TeV[i] << endl;
+		cout << ptBinning3Pto1S_lhcb[i] << " < pT < " << ptBinning3Pto1S_lhcb[i + 1] << " : " << frac3Pto1S_lhcb8TeV[i] << " +/- " << stat3Pto1S_lhcb8TeV[i] << " +/- " << downSyst3Pto1S_lhcb8TeV[i] << endl;
 }

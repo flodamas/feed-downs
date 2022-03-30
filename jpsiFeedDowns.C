@@ -35,7 +35,11 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	Float_t fracChicToJpsi[nPoints_chic_lhcb7TeV], upStat_fracChicToJpsi[nPoints_chic_lhcb7TeV], downStat_fracChicToJpsi[nPoints_chic_lhcb7TeV], upSyst_fracChicToJpsi[nPoints_chic_lhcb7TeV], downSyst_fracChicToJpsi[nPoints_chic_lhcb7TeV];
 
+	Float_t meanLHCb[nPoints_chic_lhcb7TeV];
+
 	for (Int_t i = 0; i < nPoints_chic_lhcb7TeV; i++) {
+		meanLHCb[i] = (ptBinning_chicToJpsi_lhcb7TeV[i] + ptBinning_chicToJpsi_lhcb7TeV[i + 1]) / 2.;
+
 		fracChicToJpsi[i] = 100. * ratioChicToJpsi_lhcb7TeV[i];
 
 		upStat_fracChicToJpsi[i] = 100. * upStat_ratioChicToJpsi_lhcb7TeV[i];
@@ -46,7 +50,7 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	}
 
 	auto* statChic_lhcb =
-	  statAsymmGraph(title, nPoints_chic_lhcb7TeV, ptBinning_chicToJpsi_lhcb7TeV, fracChicToJpsi, downStat_fracChicToJpsi, upStat_fracChicToJpsi, colorChic, markerChic);
+	  statAsymmGraph(title, nPoints_chic_lhcb7TeV, meanLHCb, ptBinning_chicToJpsi_lhcb7TeV, fracChicToJpsi, downStat_fracChicToJpsi, upStat_fracChicToJpsi, colorChic, markerChic);
 
 	auto* systChic_lhcb =
 	  systAsymmGraph(nPoints_chic_lhcb7TeV, ptBinning_chicToJpsi_lhcb7TeV, xErrorWidth, fracChicToJpsi, downSyst_fracChicToJpsi, upSyst_fracChicToJpsi, colorChic);
@@ -119,11 +123,11 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		//systPsi2SToJpsi_cms[i] = fracPsi2SToJpsi_cms[i] * systPercPtRatio_psi2S_cms13TeV[i] / 100.;
 	}
 
-	auto* statPsi2S_cms = myStatGraph(title, nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, fracPsi2SToJpsi_cms, statPsi2SToJpsi_cms, colorPsi2S + 1, markerCMS);
+	auto* statPsi2S_cms = statAsymmGraph(title, nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, ptBinning_psi2S_cms7TeV, fracPsi2SToJpsi_cms, statPsi2SToJpsi_cms, statPsi2SToJpsi_cms, colorPsi2S + 1, markerCMS);
 
 	statPsi2S_cms->Draw("PZ");
 
-	auto* systPsi2S_cms = mySystGraph(nPointsPsi2S_cms, ptBinning_psi2S_cms7TeV, xErrorWidth, fracPsi2SToJpsi_cms, systPsi2SToJpsi_cms, colorPsi2S + 1);
+	auto* systPsi2S_cms = systDoubleAsymmGraph(nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, xErrorWidth, fracPsi2SToJpsi_cms, systPsi2SToJpsi_cms, systPsi2SToJpsi_cms, colorPsi2S + 1);
 
 	systPsi2S_cms->Draw("5");
 
