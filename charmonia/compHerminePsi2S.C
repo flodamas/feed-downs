@@ -1,15 +1,17 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/Graph.h"
 
-#include "charmonia/branching.C"
-#include "charmonia/psi2StoJpsiALICE7TeV.C"
-#include "charmonia/chicToJpsiLHCb7TeV.C"
-#include "charmonia/chicToJpsiATLAS7TeV.C"
+#include "data/BranchingRatios.h"
 
-#include "charmonia/psi2StoJpsiLHCb13TeV.C"
-#include "charmonia/psi2StoJpsiCMS7TeV.C"
-#include "charmonia/psi2StoJpsiCMS13TeV.C"
+#include "data/psi2StoJpsiALICE7TeV.C"
+#include "data/chicToJpsiLHCb7TeV.C"
+#include "data/chicToJpsiATLAS7TeV.C"
+
+#include "data/psi2StoJpsiLHCb13TeV.C"
+#include "data/psi2StoJpsiCMS7TeV.C"
+#include "data/psi2StoJpsiCMS13TeV.C"
 
 #endif
 
@@ -17,13 +19,9 @@ Float_t xErrorWidth = .3;
 
 const Color_t myColor = kRed;
 
-void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
-	string color = "\033[1;31m";
-
-	auto* canv = myCanvas("canv");
+void compHerminePsi2S() {
+	auto* canv = Canvas("canv", 900);
 	canv->SetGridy();
-
-	if (withLogYaxis) canv->SetLogy();
 
 	const char* title = ";#it{p}_{T}^{J/#psi} (GeV);#psi(2S)-to-J/#psi feed-down fractions (in %)";
 
@@ -43,16 +41,10 @@ void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) 
 		errorPsi2SToJpsi_lhcb[i] = errorPtDiffRatio_psi2S_lhcb13TeV[i] * myBR;
 	}
 
-	auto* statPsi2S_lhcb = myStatGraph(title, nPointsPsi2S_lhcb, ptBinning_psi2S_lhcb13TeV, fracPsi2SToJpsi_lhcb, errorPsi2SToJpsi_lhcb, myColor, markerLHCb);
+	auto* statPsi2S_lhcb = StatGraph(title, nPointsPsi2S_lhcb, ptBinning_psi2S_lhcb13TeV, fracPsi2SToJpsi_lhcb, errorPsi2SToJpsi_lhcb, myColor, markerLHCb);
 
-	statPsi2S_lhcb->SetMinimum(0);
-	statPsi2S_lhcb->SetMaximum((withLegend) ? 45 : 45);
+	statPsi2S_lhcb->SetMaximum(40);
 	statPsi2S_lhcb->GetXaxis()->SetLimits(0, 45);
-
-	if (withLogYaxis) {
-		statPsi2S_lhcb->SetMinimum(.4);
-		statPsi2S_lhcb->SetMaximum(1000);
-	}
 
 	statPsi2S_lhcb->Draw("APZ");
 
@@ -68,16 +60,13 @@ void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) 
 		statFracCMS_mine[i] = statPtRatio_psi2S_cms7TeV[i] * (brJpsitomumu / brPsi2Stomumu) * myBR / 100.;
 
 		systFracCMS_mine[i] = systPtRatio_psi2S_cms7TeV[i] * (brJpsitomumu / brPsi2Stomumu) * myBR / 100.;
-
-		//statFracCMS_mine[i] = fracCMS_mine[i] * statPercPtRatio_psi2S_cms13TeV[i] / 100.;
-		//systFracCMS_mine[i] = fracCMS_mine[i] * systPercPtRatio_psi2S_cms13TeV[i] / 100.;
 	}
 
-	auto* statCMS_mine = statAsymmGraph(title, nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, ptBinning_psi2S_cms7TeV, fracCMS_mine, statFracCMS_mine, statFracCMS_mine, myColor + 1, markerCMS);
+	auto* statCMS_mine = AsymmStatGraph(title, nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, ptBinning_psi2S_cms7TeV, fracCMS_mine, statFracCMS_mine, statFracCMS_mine, myColor + 1, markerCMS);
 
 	statCMS_mine->Draw("PZ");
 
-	auto* systCMS_mine = systDoubleAsymmGraph(nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, xErrorWidth, fracCMS_mine, systFracCMS_mine, systFracCMS_mine, myColor + 1);
+	auto* systCMS_mine = DoubleAsymmSystGraph(nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, xErrorWidth, fracCMS_mine, systFracCMS_mine, systFracCMS_mine, myColor + 1);
 
 	systCMS_mine->Draw("5");
 
@@ -99,11 +88,11 @@ void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) 
 		systFracALICE_hermine[i] = systPtDiffRatio_psi2S_alice7TeV[i] * brHermine;
 	}
 
-	auto* statALICE_hermine = myStatGraph(title, nPointsPsi2S_alice, ptBinning_psi2S_alice7TeV, fracALICE_hermine, statFracALICE_hermine, kBlack, markerLHCb);
+	auto* statALICE_hermine = StatGraph(title, nPointsPsi2S_alice, ptBinning_psi2S_alice7TeV, fracALICE_hermine, statFracALICE_hermine, kBlack, markerLHCb);
 
 	statALICE_hermine->Draw("PZ");
 
-	auto* systALICE_hermine = mySystGraph(nPointsPsi2S_alice, ptBinning_psi2S_alice7TeV, xErrorWidth, fracALICE_hermine, systFracALICE_hermine, kBlack);
+	auto* systALICE_hermine = SystGraph(nPointsPsi2S_alice, ptBinning_psi2S_alice7TeV, xErrorWidth, fracALICE_hermine, systFracALICE_hermine, kBlack);
 
 	systALICE_hermine->Draw("5");
 
@@ -119,33 +108,28 @@ void compHerminePsi2S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) 
 		statFracCMS_hermine[i] = statPtRatio_psi2S_cms7TeV[i] * (brJpsitomumu / brPsi2Stomumu) * brHermine / 100.;
 
 		systFracCMS_hermine[i] = systPtRatio_psi2S_cms7TeV[i] * (brJpsitomumu / brPsi2Stomumu) * brHermine / 100.;
-
-		//statFracCMS_mine[i] = fracCMS_mine[i] * statPercPtRatio_psi2S_cms13TeV[i] / 100.;
-		//systFracCMS_mine[i] = fracCMS_mine[i] * systPercPtRatio_psi2S_cms13TeV[i] / 100.;
 	}
 
-	auto* statCMS_hermine = myStatGraph(title, nPointsCMS_hermine, ptBinning_psi2S_cms7TeV, fracCMS_hermine, statFracCMS_hermine, kBlue, markerCMS);
+	auto* statCMS_hermine = StatGraph(title, nPointsCMS_hermine, ptBinning_psi2S_cms7TeV, fracCMS_hermine, statFracCMS_hermine, kBlue, markerCMS);
 
 	statCMS_hermine->Draw("PZ");
 
-	auto* systCMS_hermine = mySystGraph(nPointsCMS_hermine, ptBinning_psi2S_cms7TeV, xErrorWidth, fracCMS_hermine, systFracCMS_hermine, kBlue);
+	auto* systCMS_hermine = SystGraph(nPointsCMS_hermine, ptBinning_psi2S_cms7TeV, xErrorWidth, fracCMS_hermine, systFracCMS_hermine, kBlue);
 
 	systCMS_hermine->Draw("5");
 
 	/// legend
 
-	auto* myLegend = new TLegend(.17, .93, .35, .73, "My results, BR(#psi(2S) #rightarrow J/#psi + anything) = 61.4%");
+	auto* myLegend = new TLegend(.17, .93, .35, .70, "My results, BR(#psi(2S) #rightarrow J/#psi + anything) = 61.4%");
 	myLegend->AddEntry(statPsi2S_lhcb, "prompt, LHCb 13 TeV", "p");
-	myLegend->AddEntry(statCMS_mine, "prompt, CMS 7 TeV (4.90 fb^{#minus 1})", "p");
+	myLegend->AddEntry(statCMS_mine, "prompt, CMS 7 TeV (4.90 fb^{-1})", "p");
 	myLegend->Draw();
 
 	auto* hermineLegend = new TLegend(.55, .45, .75, .25, "Hermine's results");
-
 	hermineLegend->AddEntry(statALICE_hermine, "inclusive, ALICE 7 TeV", "p");
 	hermineLegend->AddEntry(statCMS_hermine, "prompt, CMS 7 TeV", "p");
 	hermineLegend->Draw();
 	drawHeaderLegend(Form("reproduced with BR(#psi(2S) #rightarrow J/#psi + neutrals) = %2.1f%%", brHermine), .25, .2);
 
-	canv->SaveAs("figures/herminePsi2S.png", "RECREATE");
-	canv->Close();
+	saveCanvas(canv, "herminePsi2S");
 }

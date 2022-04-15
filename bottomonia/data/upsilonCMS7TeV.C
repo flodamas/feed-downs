@@ -49,7 +49,7 @@ Float_t dy2S_for3S_cms7TeV[] = {0.376, 0.4, 1.5 * 0.3804, 1.5 * 0.380464};
 Float_t stat_dy2S_for3S_cms7TeV[] = {0.009, 0.01, 1.5 * 0.0089, 1.5 * 0.00963837};
 
 /*
-Differential cross-section ratios between Y(nS) states (not corrected for branching fractions) for pt < 100 GeV/c
+Differential cross-section ratios between Y(nS) states (not corrected for branching fractions) for pt < 100 GeV
 
 2011 CMS data at 7 TeV https://www.hepdata.net/record/ins1342266
 

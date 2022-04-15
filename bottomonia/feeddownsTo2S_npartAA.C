@@ -1,31 +1,23 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/Graph.h"
 
-#include "bottomonia/branching.C"
-#include "bottomonia/feedLHCb7and8TeV.C"
-#include "bottomonia/upsilonLHCb7and8TeV.C"
-#include "bottomonia/upsilonCMS7TeV.C"
+#include "data/BranchingRatios.h"
+
+#include "data/feedLHCb7and8TeV.C"
+#include "data/upsilonLHCb7and8TeV.C"
+#include "data/upsilonCMS7TeV.C"
 
 #endif
 
 Float_t xErrorWidth = .4;
 
-const Color_t color2P = kAzure + 1;
-const Color_t color3P = kGreen + 2;
-
-const Color_t color3Sto2S_ = kPink + 6;
-
-const Int_t marker2P = 21;
-const Int_t marker3P = 22;
-
 void feeddownsTo2S_npartAA(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
 	// Feed-downs to Y(2S)
-	auto* canv2S = myCanvas("canv2S", 800);
+	auto* canv = Canvas("canv", 800);
 
-	if (withLogYaxis) canv2S->SetLogy();
-
-	const char* title2S = ";#LTN_{part}#GT;Fraction of #varUpsilon(2S) from feed-down (in %)";
+	const char* title = ";#LTN_{part}#GT;Fraction of #varUpsilon(2S) from feed-down (in %)";
 
 	/// Chi_b first
 
@@ -49,18 +41,17 @@ void feeddownsTo2S_npartAA(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFAL
 		error2Pto2S_pbpb[i] = error2Pto2S_pp * (survival_2P[i] / survival_2S[i]);
 	}
 
-	auto* stat2Pto2S = myStatGraph(title2S, nPoints, nPart, frac2Pto2S_pbpb, error2Pto2S_pbpb, color2P, marker2P);
+	auto* stat2Pto2S = StatGraph(title, nPoints, nPart, frac2Pto2S_pbpb, error2Pto2S_pbpb, color2P, marker2P);
 	stat2Pto2S->SetLineWidth(0);
 	stat2Pto2S->SetFillStyle(1001);
 	stat2Pto2S->SetFillColorAlpha(color2P, .5);
-	stat2Pto2S->SetMinimum(0);
 	stat2Pto2S->SetMaximum(40);
 
 	stat2Pto2S->GetXaxis()->SetLimits(0, 400);
 
 	stat2Pto2S->Draw("A3");
 
-	auto* line2Pto2S = myGraph(nPoints, nPart, frac2Pto2S_pbpb, color2P);
+	auto* line2Pto2S = SimpleGraph(nPoints, nPart, frac2Pto2S_pbpb, color2P);
 	line2Pto2S->Draw("l");
 
 	/// CMS 2018 PbPb 5 TeV data
@@ -83,7 +74,7 @@ void feeddownsTo2S_npartAA(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFAL
 		error3Sto2S_pbpb[i] = histo->GetBinError(i + 1) * (br2Stomumu / br3Stomumu) * br3Sto2Sanything;
 	}
 
-	auto* stat3Sto2Sgraph_pbpb = myStatGraph(title2S, nPoints_pbpb, nPart_pbpb, frac3Sto2S_pbpb, error3Sto2S_pbpb, kRed + 1, markerCMS);
+	auto* stat3Sto2Sgraph_pbpb = StatGraph(title, nPoints_pbpb, nPart_pbpb, frac3Sto2S_pbpb, error3Sto2S_pbpb, kRed + 1, markerCMS);
 
 	stat3Sto2Sgraph_pbpb->Draw("PZ");
 
@@ -98,8 +89,5 @@ void feeddownsTo2S_npartAA(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFAL
 
 	drawHeaderLegend("overestimation using FD(#chi_{b}(2P)#rightarrow #varUpsilon(2S))_{pp} = (30 #pm 5)%", .17);
 
-	canv2S->RedrawAxis();
-
-	canv2S->SaveAs("figures/feeddownsTo2S_nPartCMSPbPb.png", "RECREATE");
-	canv2S->Close();
+	saveCanvas(canv, "feeddownsTo2S_nPartCMSPbPb");
 }

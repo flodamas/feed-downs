@@ -1,11 +1,13 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/myPlot.C"
 
-#include "bottomonia/branching.C"
-#include "bottomonia/upsilonATLAS7TeV.C"
-#include "bottomonia/upsilonCMS7TeV.C"
-#include "bottomonia/upsilonLHCb7and8TeV.C"
+#include "data/BranchingRatios.h"
+
+#include "data/upsilonATLAS7TeV.C"
+#include "data/upsilonCMS7TeV.C"
+#include "data/upsilonLHCb7and8TeV.C"
 
 #endif
 

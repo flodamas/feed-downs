@@ -1,8 +1,10 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/myPlot.C"
 
-#include "data/branching.C"
+#include "data/BranchingRatios.h"
+
 #include "data/feedLHCb7and8TeV.C"
 #include "data/upsilonLHCb7and8TeV.C"
 #include "data/upsilonCMS13TeV.C"
@@ -12,14 +14,6 @@
 #endif
 
 Float_t xErrorWidth = .4;
-
-const Color_t color1P = kRed;
-const Color_t color2P = kAzure + 1;
-const Color_t color3P = kGreen + 2;
-
-const Int_t marker1P = 20;
-const Int_t marker2P = 21;
-const Int_t marker3P = 22;
 
 void direct_suppression() {
 	// Feed-downs to Y(1S)

@@ -1,44 +1,35 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/Graph.h"
 
-#include "bottomonia/branching.C"
-#include "bottomonia/feedLHCb7and8TeV.C"
-#include "bottomonia/upsilonLHCb7and8TeV.C"
-#include "bottomonia/upsilonCMS7TeV.C"
-#include "bottomonia/upsilonCMS13TeV.C"
+#include "data/BranchingRatios.h"
+
+#include "data/feedLHCb7and8TeV.C"
+#include "data/upsilonLHCb7and8TeV.C"
+#include "data/upsilonCMS7TeV.C"
+#include "data/upsilonCMS13TeV.C"
 
 #endif
 
 Float_t xErrorWidth = .4;
 
-const Color_t color1P = kRed + 1;
-const Color_t color2P = kAzure + 1;
-const Color_t color3P = kGreen + 2;
-
-const Int_t marker1P = 20;
-const Int_t marker2P = 21;
-const Int_t marker3P = 22;
-
-void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
+void feeddowns_upsilon1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	string color = "\033[1;31m";
 
 	// Feed-downs to Y(1S)
-	auto* canv = myCanvas("canv");
+	auto* canv = Canvas("canv");
 
 	if (withLogYaxis) canv->SetLogy();
 
-	const char* title = ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);Feed-down fractions to #varUpsilon(1S) (in %)";
+	const char* title = ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);#varUpsilon(1S) feed-down fractions (in %)";
 
 	// Chi_b(1P) first
 
-	auto* stat1Pto1S =
-	  myStatGraph(title, nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, frac1Pto1S_lhcb8TeV, stat1Pto1S_lhcb8TeV, color1P, marker2P);
+	auto* stat1Pto1S = StatGraph(title, nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, frac1Pto1S_weightedLHCb, stat1Pto1S_weightedLHCb, color1P, marker2P);
 
-	auto* syst1Pto1S =
-	  mySystGraph(nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_lhcb8TeV, syst1Pto1S_lhcb8TeV, color1P - 1);
+	auto* syst1Pto1S = SystGraph(nPoints1Pto1S_lhcb, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_weightedLHCb, syst1Pto1S_weightedLHCb, color1P - 1);
 
-	stat1Pto1S->SetMinimum(0);
 	stat1Pto1S->SetMaximum((withLegend) ? 40 : 35);
 	stat1Pto1S->GetXaxis()->SetLimits(0, 50);
 
@@ -52,20 +43,18 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	// Chi_b(2P)
 
-	auto* stat2Pto1S =
-	  myStatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_lhcb8TeV, stat2Pto1S_lhcb8TeV, color2P, marker2P);
+	auto* stat2Pto1S = StatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_weightedLHCb, stat2Pto1S_weightedLHCb, color2P, marker2P);
 
-	auto* syst2Pto1S =
-	  mySystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_lhcb8TeV, syst2Pto1S_lhcb8TeV, color2P);
+	auto* syst2Pto1S = SystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_weightedLHCb, syst2Pto1S_weightedLHCb, color2P);
 
 	stat2Pto1S->Draw("PZ");
 	syst2Pto1S->Draw("5");
 
 	// Chi_b(3P)
 
-	auto* stat3Pto1S = myStatGraph(title, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, frac3Pto1S_lhcb8TeV, stat3Pto1S_lhcb8TeV, color3P, marker2P);
+	auto* stat3Pto1S = StatGraph(title, nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, frac3Pto1S_weightedLHCb, stat3Pto1S_weightedLHCb, color3P, marker2P);
 
-	auto* syst3Pto1S = systAsymmGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, frac3Pto1S_lhcb8TeV, upSyst3Pto1S_lhcb8TeV, downSyst3Pto1S_lhcb8TeV, color3P);
+	auto* syst3Pto1S = SystGraph(nPoints3Pto1S_lhcb, ptBinning3Pto1S_lhcb, xErrorWidth, frac3Pto1S_weightedLHCb, syst3Pto1S_weightedLHCb, color3P);
 
 	stat3Pto1S->Draw("PZ");
 	syst3Pto1S->Draw("5");
@@ -85,11 +74,11 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		error3Sto1S_lhcb[i] = errorPtDiff_2p0y4p5_3Sto1S_lhcb8TeV[i] * (br1Stomumu / br3Stomumu) * br3Sto1Sanything;
 	}
 
-	auto* stat2Sto1Sgraph_lhcb = myStatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac2Sto1S_lhcb, error2Sto1S_lhcb, color2Sto1S, markerLHCb);
+	auto* stat2Sto1Sgraph_lhcb = StatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac2Sto1S_lhcb, error2Sto1S_lhcb, color2Sover1S, markerLHCb);
 
 	stat2Sto1Sgraph_lhcb->Draw("PZ");
 
-	auto* stat3Sto1Sgraph_lhcb = myStatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac3Sto1S_lhcb, error3Sto1S_lhcb, color3Sto1S, markerLHCb);
+	auto* stat3Sto1Sgraph_lhcb = StatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac3Sto1S_lhcb, error3Sto1S_lhcb, color3Sover1S, markerLHCb);
 
 	stat3Sto1Sgraph_lhcb->Draw("PZ");
 
@@ -116,21 +105,21 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	// Y(2S)-to-Y(1S)
 
-	auto* statGraph_cms2Sto1S = myStatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sto1S + 1, markerCMS);
+	auto* statGraph_cms2Sto1S = StatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sover1S + 1, markerCMS);
 
 	statGraph_cms2Sto1S->Draw("PZ");
 
-	auto* systGraph_cms2Sto1S = mySystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac2Sto1S_cms, syst2Sto1S_cms, color2Sto1S + 1);
+	auto* systGraph_cms2Sto1S = SystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac2Sto1S_cms, syst2Sto1S_cms, color2Sover1S + 1);
 
 	systGraph_cms2Sto1S->Draw("5");
 
 	// Y(3S)-to-Y(1S)
 
-	auto* statGraph_cms3Sto1S = myStatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac3Sto1S_cms, stat3Sto1S_cms, color3Sto1S, markerCMS);
+	auto* statGraph_cms3Sto1S = StatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac3Sto1S_cms, stat3Sto1S_cms, color3Sover1S - 1, markerCMS);
 
 	statGraph_cms3Sto1S->Draw("PZ");
 
-	auto* systGraph_cms3Sto1S = mySystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac3Sto1S_cms, syst3Sto1S_cms, color3Sto1S);
+	auto* systGraph_cms3Sto1S = SystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac3Sto1S_cms, syst3Sto1S_cms, color3Sover1S - 1);
 
 	systGraph_cms3Sto1S->Draw("5");
 
@@ -146,8 +135,7 @@ void feeddownsTo1S(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	legend->AddEntry(stat3Pto1S, "#chi_{b}(3P)", "p");
 	if (withLegend) legend->Draw();
 
-	canv->SaveAs("figures/feeddowns_to_1S_8TeV.png", "RECREATE");
-	canv->Close();
+	saveCanvas(canv, "feeddownsToUpsilon1S_8TeV");
 
 	/// print the results, in the order of importance
 

@@ -1,8 +1,10 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/myPlot.C"
 
-#include "bottomonia/branching.C"
+#include "data/BranchingRatios.h"
+
 #include "bottomonia/feedLHCb7and8TeV.C"
 #include "bottomonia/upsilonLHCb7and8TeV.C"
 #include "bottomonia/upsilonCMS7TeV.C"
@@ -14,13 +16,6 @@
 #endif
 
 Float_t xErrorWidth = .4;
-
-const Color_t color2P = kAzure + 1;
-const Color_t color3P = kGreen + 2;
-const Color_t color3Sto2S_ = kPink + 6;
-
-const Int_t marker2P = 21;
-const Int_t marker3P = 22;
 
 /// rebin the Y(nS) cross-section ratios to match the FD binning(s)
 

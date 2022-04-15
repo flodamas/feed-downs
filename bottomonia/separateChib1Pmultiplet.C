@@ -1,47 +1,35 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/Graph.h"
 
-#include "bottomonia/branching.C"
-#include "bottomonia/feedLHCb7and8TeV.C"
-#include "bottomonia/upsilonLHCb7and8TeV.C"
-#include "bottomonia/upsilonCMS7TeV.C"
+#include "data/BranchingRatios.h"
 
-#include "bottomonia/chib1PstatesCMS8TeV.C"
+#include "data/feedLHCb7and8TeV.C"
+#include "data/upsilonLHCb7and8TeV.C"
+#include "data/upsilonCMS7TeV.C"
+
+#include "data/chib1PstatesCMS8TeV.C"
 
 #endif
 
 Float_t xErrorWidth = .4;
 
-const Color_t color1P = kRed + 1;
-const Color_t color2P = kAzure + 1;
-const Color_t color3P = kGreen + 2;
-
-const Int_t marker1P = 20;
-const Int_t marker2P = 21;
-const Int_t marker3P = 22;
-
-void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
-	string color = "\033[1;31m";
-
-	// Feed-downs to Y(1S)
-	auto* canv = myCanvas("canv");
+void separateChib1Pmultiplet(Bool_t withLogYaxis = kFALSE) {
+	auto* canv = Canvas("canv", 800);
 
 	if (withLogYaxis) canv->SetLogy();
 
-	const char* title = ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);Feed-down fractions to #varUpsilon(1S) (in %)";
+	const char* title = ";#it{p}_{T}^{#varUpsilon(1S)} (GeV);#varUpsilon(1S) feed-down fractions (in %)";
 
 	/// Chi_b(1P) first
 
 	Int_t nPoints1P = nPoints1Pto1S_lhcb;
 
-	auto* stat1Pto1S =
-	  myStatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_weightedLHCb, stat1Pto1S_weightedLHCb, color1P, marker2P);
+	auto* stat1Pto1S = StatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_weightedLHCb, stat1Pto1S_weightedLHCb, color1P, marker2P);
 
-	auto* syst1Pto1S =
-	  mySystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_weightedLHCb, syst1Pto1S_weightedLHCb, color1P - 1);
+	auto* syst1Pto1S = SystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_weightedLHCb, syst1Pto1S_weightedLHCb, color1P - 1);
 
-	stat1Pto1S->SetMinimum(0);
 	stat1Pto1S->SetMaximum(40);
 	stat1Pto1S->GetXaxis()->SetLimits(0, 40);
 
@@ -74,23 +62,23 @@ void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
 		syst1Pto1S_Jequal2[i] = frac1Pto1S_Jequal2[i] * (syst1Pto1S_weightedLHCb[i] / frac1Pto1S_weightedLHCb[i]);
 	}
 
-	auto* statGraph1Pto1S_Jequal1 = myStatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_Jequal1, stat1Pto1S_Jequal1, kPink + 6, marker2P);
+	auto* statGraph1Pto1S_Jequal1 = StatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_Jequal1, stat1Pto1S_Jequal1, kPink + 6, marker2P);
 	statGraph1Pto1S_Jequal1->Draw("PZ");
 
-	auto* systGraph1Pto1S_Jequal1 = mySystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_Jequal1, syst1Pto1S_Jequal1, kPink + 6);
+	auto* systGraph1Pto1S_Jequal1 = SystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_Jequal1, syst1Pto1S_Jequal1, kPink + 6);
 	systGraph1Pto1S_Jequal1->Draw("5");
 
-	auto* statGraph1Pto1S_Jequal2 = myStatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_Jequal2, stat1Pto1S_Jequal2, kOrange + 1, marker2P);
+	auto* statGraph1Pto1S_Jequal2 = StatGraph(title, nPoints1P, ptBinning1Pto1S_lhcb, frac1Pto1S_Jequal2, stat1Pto1S_Jequal2, kOrange + 1, marker2P);
 	statGraph1Pto1S_Jequal2->Draw("PZ");
 
-	auto* systGraph1Pto1S_Jequal2 = mySystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_Jequal2, syst1Pto1S_Jequal2, kOrange + 1);
+	auto* systGraph1Pto1S_Jequal2 = SystGraph(nPoints1P, ptBinning1Pto1S_lhcb, xErrorWidth, frac1Pto1S_Jequal2, syst1Pto1S_Jequal2, kOrange + 1);
 	systGraph1Pto1S_Jequal2->Draw("5");
 
 	/// Chi_b(2P)
 
-	auto* stat2Pto1S = myStatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_weightedLHCb, stat2Pto1S_weightedLHCb, color2P, marker2P);
+	auto* stat2Pto1S = StatGraph(title, nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, frac2Pto1S_weightedLHCb, stat2Pto1S_weightedLHCb, color2P, marker2P);
 
-	auto* syst2Pto1S = mySystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_weightedLHCb, syst2Pto1S_weightedLHCb, color2P);
+	auto* syst2Pto1S = SystGraph(nPoints2Pto1S_lhcb, ptBinning2Pto1S_lhcb, xErrorWidth, frac2Pto1S_weightedLHCb, syst2Pto1S_weightedLHCb, color2P);
 
 	//stat2Pto1S->Draw("PZ");
 	//syst2Pto1S->Draw("5");
@@ -110,7 +98,7 @@ void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
 		error3Sto1S_lhcb[i] = errorPtDiff_2p0y4p5_3Sto1S_lhcb8TeV[i] * (br1Stomumu / br3Stomumu) * br3Sto1Sanything;
 	}
 
-	auto* stat2Sto1Sgraph_lhcb = myStatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac2Sto1S_lhcb, error2Sto1S_lhcb, color2Sto1S, markerLHCb);
+	auto* stat2Sto1Sgraph_lhcb = StatGraph(title, nPoints2Sto1S_lhcb, ptBinning_2p0y4p5_lhcb7and8TeV, frac2Sto1S_lhcb, error2Sto1S_lhcb, color2Sover1S, markerLHCb);
 
 	//stat2Sto1Sgraph_lhcb->Draw("PZ");
 
@@ -137,11 +125,11 @@ void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
 
 	// Y(2S)-to-Y(1S)
 
-	auto* statGraph_cms2Sto1S = myStatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sto1S + 1, markerCMS);
+	auto* statGraph_cms2Sto1S = StatGraph(title, nPoints2Sto1S_cms, ptBinning_cms7TeV, frac2Sto1S_cms, stat2Sto1S_cms, color2Sover1S + 1, markerCMS);
 
 	//statGraph_cms2Sto1S->Draw("PZ");
 
-	auto* systGraph_cms2Sto1S = mySystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac2Sto1S_cms, syst2Sto1S_cms, color2Sto1S + 1);
+	auto* systGraph_cms2Sto1S = SystGraph(nPoints2Sto1S_cms, ptBinning_cms7TeV, xErrorWidth, frac2Sto1S_cms, syst2Sto1S_cms, color2Sover1S + 1);
 
 	//systGraph_cms2Sto1S->Draw("5");
 
@@ -157,6 +145,5 @@ void multipletTo1S(Bool_t withLogYaxis = kFALSE) {
 	y -= .07;
 	//drawLegend(stat2Sto1Sgraph_lhcb, "#varUpsilon(2S)", x1, y);
 
-	canv->SaveAs("figures/multiplet_to_1S.png", "RECREATE");
-	canv->Close();
+	saveCanvas(canv, "feeddowns_chib1PMultiplet");
 }

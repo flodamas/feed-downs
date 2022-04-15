@@ -1,9 +1,9 @@
 void weightedAverage() {
-	vector<Double_t> data = {36, 40};
+	vector<float> data = {36, 40};
 
-	vector<Double_t> stat = {14, 9};
+	vector<float> stat = {14, 9};
 
-	vector<Double_t> syst = {8, 12};
+	vector<float> syst = {8, 12};
 
 	if (!(data.size() == stat.size())) {
 		cout << endl
@@ -12,14 +12,14 @@ void weightedAverage() {
 		return;
 	}
 
-	Double_t average = 0, statAverage = 0, systAverage = 0, sumWeights = 0;
+	float weight, average = 0, statAverage = 0, systAverage = 0, sumWeights = 0;
 
-	for (Int_t i = 0; i < data.size(); i++) {
+	for (int i = 0; i < data.size(); i++) {
 		//stat[i] = data[i] * stat[i] / 100.;
 
 		//syst[i] = data[i] * syst[i] / 100.;
 
-		Double_t weight = 1. / (stat[i] * stat[i]);
+		weight = 1. / (stat[i] * stat[i]);
 
 		sumWeights += weight;
 

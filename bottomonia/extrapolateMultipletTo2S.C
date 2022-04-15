@@ -1,26 +1,21 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/Graph.h"
 
-#include "bottomonia/branching.C"
-#include "bottomonia/feedLHCb7and8TeV.C"
-#include "bottomonia/upsilonLHCb7and8TeV.C"
-#include "bottomonia/upsilonCMS7TeV.C"
-#include "bottomonia/upsilonCMS13TeV.C"
+#include "data/BranchingRatios.h"
 
-#include "bottomonia/chib1PstatesCMS8TeV.C"
-#include "charmonia/chicRatioLHCb7TeV.C"
+#include "data/feedLHCb7and8TeV.C"
+#include "data/upsilonLHCb7and8TeV.C"
+#include "data/upsilonCMS7TeV.C"
+#include "data/upsilonCMS13TeV.C"
+
+#include "data/chib1PstatesCMS8TeV.C"
+#include "../charmonia/data/chicRatioLHCb7TeV.C"
 
 #endif
 
 Float_t xErrorWidth = .4;
-
-const Color_t color2P = kAzure + 1;
-const Color_t color3P = kGreen + 2;
-const Color_t color3Sto2S_ = kPink + 6;
-
-const Int_t marker2P = 21;
-const Int_t marker3P = 22;
 
 /// rebin the Y(nS) cross-section ratios to match the FD binning(s)
 
@@ -40,11 +35,9 @@ Float_t stat3Sto1S[] = {.001, .002, .004, .004};
 
 Float_t syst3Sto1S[] = {.013, .011, .012, .012};
 
-void extrapolateMultipletTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = kFALSE) {
+void extrapolateMultipletTo2S(Bool_t withLegend = kTRUE) {
 	// Feed-downs to Y(2S)
-	auto* canv = myCanvas("canv");
-
-	if (withLogYaxis) canv->SetLogy();
+	auto* canv = Canvas("canv");
 
 	const char* title = ";#it{p}_{T}^{#varUpsilon(2S)} (GeV);Feed-down fractions to #varUpsilon(2S) (in %)";
 
@@ -96,21 +89,20 @@ void extrapolateMultipletTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 		syst2Pto2S_Jequal2[i] = frac2Pto2S_Jequal2[i] * (syst2Pto2S_weightedLHCb[i] / frac2Pto2S_weightedLHCb[i]);
 	}
 
-	auto* statGraph2Pto2S_Jequal1 = myStatGraph(title, nPoints2Pto2S, ptBinning2Pto2S_lhcb, frac2Pto2S_Jequal1, stat2Pto2S_Jequal1, color2P, marker2P);
+	auto* statGraph2Pto2S_Jequal1 = StatGraph(title, nPoints2Pto2S, ptBinning2Pto2S_lhcb, frac2Pto2S_Jequal1, stat2Pto2S_Jequal1, color2P, marker2P);
 
-	statGraph2Pto2S_Jequal1->SetMinimum(0);
 	statGraph2Pto2S_Jequal1->SetMaximum((withLegend) ? 40 : 45);
 	statGraph2Pto2S_Jequal1->GetXaxis()->SetLimits(0, 40);
 
 	statGraph2Pto2S_Jequal1->Draw("APZ");
 
-	auto* systGraph2Pto2S_Jequal1 = mySystGraph(nPoints2Pto2S, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_Jequal1, syst2Pto2S_Jequal1, color2P);
+	auto* systGraph2Pto2S_Jequal1 = SystGraph(nPoints2Pto2S, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_Jequal1, syst2Pto2S_Jequal1, color2P);
 	systGraph2Pto2S_Jequal1->Draw("5");
 
-	auto* statGraph2Pto2S_Jequal2 = myStatGraph(title, nPoints2Pto2S, ptBinning2Pto2S_lhcb, frac2Pto2S_Jequal2, stat2Pto2S_Jequal2, color1S, marker2P);
+	auto* statGraph2Pto2S_Jequal2 = StatGraph(title, nPoints2Pto2S, ptBinning2Pto2S_lhcb, frac2Pto2S_Jequal2, stat2Pto2S_Jequal2, color1S, marker2P);
 	statGraph2Pto2S_Jequal2->Draw("PZ");
 
-	auto* systGraph2Pto2S_Jequal2 = mySystGraph(nPoints2Pto2S, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_Jequal2, syst2Pto2S_Jequal2, color1S);
+	auto* systGraph2Pto2S_Jequal2 = SystGraph(nPoints2Pto2S, ptBinning2Pto2S_lhcb, xErrorWidth, frac2Pto2S_Jequal2, syst2Pto2S_Jequal2, color1S);
 	systGraph2Pto2S_Jequal2->Draw("5");
 
 	// extrapolate X_J(2P)-> Y(2S) with X_J(2P) -> Y(1S) FD measurements
@@ -145,22 +137,22 @@ void extrapolateMultipletTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 	}
 
 	auto* extStat2Pto2S_Jequal1 =
-	  myStatGraph(title, nPoints2Pto1S, ptBinning2Pto1S_lhcb, extFD_2Pto2S_Jequal1, statExtFD_2Pto2S_Jequal1, color2S + 1, marker2P + 4);
+	  StatGraph(title, nPoints2Pto1S, ptBinning2Pto1S_lhcb, extFD_2Pto2S_Jequal1, statExtFD_2Pto2S_Jequal1, color2S + 1, marker2P + 4);
 
 	extStat2Pto2S_Jequal1->Draw("PZ");
 
 	auto* extSyst2Pto2S_Jequal1 =
-	  mySystGraph(nPoints2Pto1S, ptBinning2Pto1S_lhcb, xErrorWidth, extFD_2Pto2S_Jequal1, systExtFD_2Pto2S_Jequal1, color2S + 1);
+	  SystGraph(nPoints2Pto1S, ptBinning2Pto1S_lhcb, xErrorWidth, extFD_2Pto2S_Jequal1, systExtFD_2Pto2S_Jequal1, color2S + 1);
 
 	extSyst2Pto2S_Jequal1->Draw("5");
 
 	auto* extStat2Pto2S_Jequal2 =
-	  myStatGraph(title, nPoints2Pto1S, ptBinning2Pto1S_lhcb, extFD_2Pto2S_Jequal2, statExtFD_2Pto2S_Jequal2, kOrange + 1, marker2P + 4);
+	  StatGraph(title, nPoints2Pto1S, ptBinning2Pto1S_lhcb, extFD_2Pto2S_Jequal2, statExtFD_2Pto2S_Jequal2, kOrange + 1, marker2P + 4);
 
 	extStat2Pto2S_Jequal2->Draw("PZ");
 
 	auto* extSyst2Pto2S_Jequal2 =
-	  mySystGraph(nPoints2Pto1S, ptBinning2Pto1S_lhcb, xErrorWidth, extFD_2Pto2S_Jequal2, systExtFD_2Pto2S_Jequal2, kOrange + 1);
+	  SystGraph(nPoints2Pto1S, ptBinning2Pto1S_lhcb, xErrorWidth, extFD_2Pto2S_Jequal2, systExtFD_2Pto2S_Jequal2, kOrange + 1);
 
 	extSyst2Pto2S_Jequal2->Draw("5");
 
@@ -181,6 +173,5 @@ void extrapolateMultipletTo2S(Bool_t withLegend = kTRUE, Bool_t withLogYaxis = k
 
 	drawHeaderLegend(Form("#it{R}_{21} = %.2f #pm %.2f", ratio2to1_chib1P_CMSaverage, systRatio2to1_chib1P_CMSaverage), xChib, .6);
 
-	canv->SaveAs("figures/extrapolateMultiplet_FDto2S.png", "RECREATE");
-	canv->Close();
+	saveCanvas(canv, "extrapolateMultiplet_FDto2S");
 }

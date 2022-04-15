@@ -1,33 +1,29 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/Graph.h"
 
-#include "charmonia/branching.C"
-#include "charmonia/chicToJpsiLHCb7TeV.C"
-#include "charmonia/chicToJpsiATLAS7TeV.C"
+#include "data/BranchingRatios.h"
 
-#include "charmonia/psi2StoJpsiLHCb13TeV.C"
-#include "charmonia/psi2StoJpsiCMS7TeV.C"
-#include "charmonia/psi2StoJpsiCMS13TeV.C"
+#include "data/chicToJpsiLHCb7TeV.C"
+#include "data/chicToJpsiATLAS7TeV.C"
+
+#include "data/psi2StoJpsiLHCb13TeV.C"
+#include "data/psi2StoJpsiCMS7TeV.C"
+#include "data/psi2StoJpsiCMS13TeV.C"
 
 #endif
 
 Float_t xErrorWidth = .3;
 
-const Color_t colorChic = kRed;
-const Color_t colorPsi2S = kAzure + 1;
-
-const Int_t markerChic = 20;
-const Int_t markerPsi2S = 21;
-
-void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
+void feeddown_Jpsi(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 	string color = "\033[1;31m";
 
-	auto* canv1S = myCanvas("canv1S");
+	auto* canv = Canvas("canv");
 
-	if (withLogYaxis) canv1S->SetLogy();
+	if (withLogYaxis) canv->SetLogy();
 
-	const char* title = ";#it{p}_{T}^{J/#psi} (GeV);Feed-down fractions to J/#psi (in %)";
+	const char* title = ";#it{p}_{T}^{J/#psi} (GeV);Prompt J/#psi feed-down fractions (in %)";
 
 	/// Chi_c(1P) first
 
@@ -49,13 +45,10 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		downSyst_fracChicToJpsi[i] = 100. * TMath::Hypot(downSyst_ratioChicToJpsi_lhcb7TeV[i], 0.); // downPolSyst_ratioChicToJpsi_lhcb7TeV[i]);
 	}
 
-	auto* statChic_lhcb =
-	  statAsymmGraph(title, nPoints_chic_lhcb7TeV, meanLHCb, ptBinning_chicToJpsi_lhcb7TeV, fracChicToJpsi, downStat_fracChicToJpsi, upStat_fracChicToJpsi, colorChic, markerChic);
+	auto* statChic_lhcb = AsymmStatGraph(title, nPoints_chic_lhcb7TeV, meanLHCb, ptBinning_chicToJpsi_lhcb7TeV, fracChicToJpsi, downStat_fracChicToJpsi, upStat_fracChicToJpsi, colorChic, markerChic);
 
-	auto* systChic_lhcb =
-	  systAsymmGraph(nPoints_chic_lhcb7TeV, ptBinning_chicToJpsi_lhcb7TeV, xErrorWidth, fracChicToJpsi, downSyst_fracChicToJpsi, upSyst_fracChicToJpsi, colorChic);
+	auto* systChic_lhcb = AsymmSystGraph(nPoints_chic_lhcb7TeV, ptBinning_chicToJpsi_lhcb7TeV, xErrorWidth, fracChicToJpsi, downSyst_fracChicToJpsi, upSyst_fracChicToJpsi, colorChic);
 
-	statChic_lhcb->SetMinimum(0);
 	statChic_lhcb->SetMaximum((withLegend) ? 45 : 35);
 	statChic_lhcb->GetXaxis()->SetLimits(0, 40);
 
@@ -80,11 +73,11 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		downSyst_fracChicToJpsi_atlas[i] = 100. * TMath::Hypot(syst_ratioChicToJpsi_atlas7TeV[i], 0.); //downPolSyst_ratioChicToJpsi_atlas7TeV[i]);
 	}
 
-	auto* statChic_atlas = myStatGraph(title, nPoints_chic_atlas7TeV, ptBinning_chicToJpsi_atlas7TeV, fracChicToJpsi_atlas, stat_fracChicToJpsi_atlas, colorChic + 1, markerATLAS);
+	auto* statChic_atlas = StatGraph(title, nPoints_chic_atlas7TeV, ptBinning_chicToJpsi_atlas7TeV, fracChicToJpsi_atlas, stat_fracChicToJpsi_atlas, colorChic + 1, markerATLAS);
 
 	statChic_atlas->Draw("PZ");
 
-	auto* systChic_atlas = systAsymmGraph(nPoints_chic_atlas7TeV, ptBinning_chicToJpsi_atlas7TeV, xErrorWidth, fracChicToJpsi_atlas, downSyst_fracChicToJpsi_atlas, upSyst_fracChicToJpsi_atlas, colorChic + 1);
+	auto* systChic_atlas = AsymmSystGraph(nPoints_chic_atlas7TeV, ptBinning_chicToJpsi_atlas7TeV, xErrorWidth, fracChicToJpsi_atlas, downSyst_fracChicToJpsi_atlas, upSyst_fracChicToJpsi_atlas, colorChic + 2);
 
 	systChic_atlas->Draw("5");
 
@@ -102,7 +95,7 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 		errorPsi2SToJpsi_lhcb[i] = errorPtDiffRatio_psi2S_lhcb13TeV[i] * brPsi2StoJpsianything;
 	}
 
-	auto* statPsi2S_lhcb = myStatGraph(title, nPointsPsi2S_lhcb, ptBinning_psi2S_lhcb13TeV, fracPsi2SToJpsi_lhcb, errorPsi2SToJpsi_lhcb, colorPsi2S, markerLHCb);
+	auto* statPsi2S_lhcb = StatGraph(title, nPointsPsi2S_lhcb, ptBinning_psi2S_lhcb13TeV, fracPsi2SToJpsi_lhcb, errorPsi2SToJpsi_lhcb, colorPsi2S, markerLHCb);
 
 	statPsi2S_lhcb->Draw("PZ");
 
@@ -112,22 +105,21 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	Float_t fracPsi2SToJpsi_cms[nPointsPsi2S_cms], statPsi2SToJpsi_cms[nPointsPsi2S_cms], systPsi2SToJpsi_cms[nPointsPsi2S_cms];
 
+	Float_t brCorrection = (brJpsitomumu / brPsi2Stomumu) * brPsi2StoJpsianything / 100.;
+
 	for (Int_t i = 0; i < nPointsPsi2S_cms; i++) {
-		fracPsi2SToJpsi_cms[i] = ptDiffRatio_psi2S_cms7TeV[i] * (brJpsitomumu / brPsi2Stomumu) * brPsi2StoJpsianything / 100.;
+		fracPsi2SToJpsi_cms[i] = ptDiffRatio_psi2S_cms7TeV[i] * brCorrection;
 
-		statPsi2SToJpsi_cms[i] = statPtRatio_psi2S_cms7TeV[i] * (brJpsitomumu / brPsi2Stomumu) * brPsi2StoJpsianything / 100.;
+		statPsi2SToJpsi_cms[i] = statPtRatio_psi2S_cms7TeV[i] * brCorrection;
 
-		systPsi2SToJpsi_cms[i] = systPtRatio_psi2S_cms7TeV[i] * (brJpsitomumu / brPsi2Stomumu) * brPsi2StoJpsianything / 100.;
-
-		//statPsi2SToJpsi_cms[i] = fracPsi2SToJpsi_cms[i] * statPercPtRatio_psi2S_cms13TeV[i] / 100.;
-		//systPsi2SToJpsi_cms[i] = fracPsi2SToJpsi_cms[i] * systPercPtRatio_psi2S_cms13TeV[i] / 100.;
+		systPsi2SToJpsi_cms[i] = systPtRatio_psi2S_cms7TeV[i] * brCorrection;
 	}
 
-	auto* statPsi2S_cms = statAsymmGraph(title, nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, ptBinning_psi2S_cms7TeV, fracPsi2SToJpsi_cms, statPsi2SToJpsi_cms, statPsi2SToJpsi_cms, colorPsi2S + 1, markerCMS);
+	auto* statPsi2S_cms = AsymmStatGraph(title, nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, ptBinning_psi2S_cms7TeV, fracPsi2SToJpsi_cms, statPsi2SToJpsi_cms, statPsi2SToJpsi_cms, colorPsi2S + 1, markerCMS);
 
 	statPsi2S_cms->Draw("PZ");
 
-	auto* systPsi2S_cms = systDoubleAsymmGraph(nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, xErrorWidth, fracPsi2SToJpsi_cms, systPsi2SToJpsi_cms, systPsi2SToJpsi_cms, colorPsi2S + 1);
+	auto* systPsi2S_cms = DoubleAsymmSystGraph(nPointsPsi2S_cms, meanPt_psi2S_cms7TeV, xErrorWidth, fracPsi2SToJpsi_cms, systPsi2SToJpsi_cms, systPsi2SToJpsi_cms, colorPsi2S + 1);
 
 	systPsi2S_cms->Draw("5");
 
@@ -144,6 +136,5 @@ void jpsiFeedDowns(Bool_t withLegend = kFALSE, Bool_t withLogYaxis = kFALSE) {
 
 	if (withLegend) legend->Draw();
 
-	canv1S->SaveAs("figures/jpsiFeedDowns.png", "RECREATE");
-	canv1S->Close();
+	saveCanvas(canv, "jpsiFeedDowns");
 }

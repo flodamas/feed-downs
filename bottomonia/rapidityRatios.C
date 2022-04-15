@@ -1,11 +1,12 @@
 #ifdef __CLING__
 
-#include "myPlot.C"
+#include "../tools/Cosmetics.h"
+#include "../tools/Graph.h"
 
-#include "bottomonia/upsilonCMS7TeV.C"
-#include "bottomonia/upsilonATLAS7TeV.C"
-#include "bottomonia/upsilonLHCb7and8TeV.C"
-#include "bottomonia/upsilonLHCb13TeV.C"
+#include "data/upsilonCMS7TeV.C"
+#include "data/upsilonATLAS7TeV.C"
+#include "data/upsilonLHCb7and8TeV.C"
+#include "data/upsilonLHCb13TeV.C"
 
 #endif
 
@@ -54,7 +55,7 @@ TFitResultPtr getFitResult(TGraphErrors* graphCMS, TGraphErrors* graphLHCb) {
 }
 
 void rapidityRatios() {
-	auto* canvas = myCanvas("canvas");
+	auto* canvas = Canvas("canvas");
 
 	const char* title = ";|#it{y} |;BR #times cross-section ratio";
 
@@ -72,7 +73,7 @@ void rapidityRatios() {
 		statRapidDiff_2Sover1S_cms7TeV[i] = rapidDiff_2Sover1S_cms7TeV[i] * TMath::Hypot(stat_dy2S_cms7TeV[i] / dy2S_cms7TeV[i], stat_dy1S_for2S_cms7TeV[i] / dy1S_for2S_cms7TeV[i]);
 	}
 
-	auto* statGraph_mid2Sto1S = myStatGraph(title, nPoints_mid2Sover1S, rapidityBinning_2Sover1S_cms7TeV, rapidDiff_2Sover1S_cms7TeV, statRapidDiff_2Sover1S_cms7TeV, color2Sto1S + 1, markerCMS);
+	auto* statGraph_mid2Sto1S = StatGraph(title, nPoints_mid2Sover1S, rapidityBinning_2Sover1S_cms7TeV, rapidDiff_2Sover1S_cms7TeV, statRapidDiff_2Sover1S_cms7TeV, color2Sto1S + 1, markerCMS);
 
 	// Y(3S)-to-Y(1S)
 
@@ -86,7 +87,7 @@ void rapidityRatios() {
 		statRapidDiff_3Sover1S_cms7TeV[i] = rapidDiff_3Sover1S_cms7TeV[i] * TMath::Hypot(stat_dy3S_cms7TeV[i] / dy3S_cms7TeV[i], stat_dy1S_for3S_cms7TeV[i] / dy1S_for3S_cms7TeV[i]);
 	}
 
-	auto* statGraph_mid3Sto1S = myStatGraph(title, nPoints_mid3Sover1S, rapidityBinning_3Sover1S_cms7TeV, rapidDiff_3Sover1S_cms7TeV, statRapidDiff_3Sover1S_cms7TeV, color3Sto1S - 1, markerCMS);
+	auto* statGraph_mid3Sto1S = StatGraph(title, nPoints_mid3Sover1S, rapidityBinning_3Sover1S_cms7TeV, rapidDiff_3Sover1S_cms7TeV, statRapidDiff_3Sover1S_cms7TeV, color3Sto1S - 1, markerCMS);
 
 	// Y(3S)-to-Y(2S)
 
@@ -100,22 +101,22 @@ void rapidityRatios() {
 		statRapidDiff_3Sover2S_cms7TeV[i] = rapidDiff_3Sover2S_cms7TeV[i] * TMath::Hypot(stat_dy3S_cms7TeV[i] / dy3S_cms7TeV[i], stat_dy2S_for3S_cms7TeV[i] / dy2S_for3S_cms7TeV[i]);
 	}
 
-	auto* statGraph_mid3Sto2S = myStatGraph(title, nPoints_mid3Sover2S, rapidityBinning_3Sover2S_cms7TeV, rapidDiff_3Sover2S_cms7TeV, statRapidDiff_3Sover2S_cms7TeV, color3Sto2S - 1, markerCMS);
+	auto* statGraph_mid3Sto2S = StatGraph(title, nPoints_mid3Sover2S, rapidityBinning_3Sover2S_cms7TeV, rapidDiff_3Sover2S_cms7TeV, statRapidDiff_3Sover2S_cms7TeV, color3Sto2S - 1, markerCMS);
 
 	/// forward rapidity LHCb measurements
 	const Int_t nPoints_lhcb = sizeof(rapidityBinning_lhcb7and8TeV) / sizeof(Float_t) - 1;
 
 	// Y(2S)-to-Y(1S)
 
-	auto* statGraph_lhcb2Sto1S = myStatGraph(title, nPoints_lhcb, rapidityBinning_lhcb7and8TeV, rapidDiff_2Sto1S_lhcb7TeV, errorRapidDiff_2Sto1S_lhcb7TeV, color2Sto1S, markerLHCb);
+	auto* statGraph_lhcb2Sto1S = StatGraph(title, nPoints_lhcb, rapidityBinning_lhcb7and8TeV, rapidDiff_2Sto1S_lhcb7TeV, errorRapidDiff_2Sto1S_lhcb7TeV, color2Sto1S, markerLHCb);
 
 	// Y(3S)-to-Y(1S)
 
-	auto* statGraph_lhcb3Sto1S = myStatGraph(title, nPoints_lhcb, rapidityBinning_lhcb7and8TeV, rapidDiff_3Sto1S_lhcb7TeV, errorRapidDiff_3Sto1S_lhcb7TeV, color3Sto1S, markerLHCb);
+	auto* statGraph_lhcb3Sto1S = StatGraph(title, nPoints_lhcb, rapidityBinning_lhcb7and8TeV, rapidDiff_3Sto1S_lhcb7TeV, errorRapidDiff_3Sto1S_lhcb7TeV, color3Sto1S, markerLHCb);
 
 	// Y(3S)-to-Y(2S)
 
-	auto* statGraph_lhcb3Sto2S = myStatGraph(title, nPoints_lhcb, rapidityBinning_lhcb7and8TeV, rapidDiff_3Sto2S_lhcb7TeV, errorRapidDiff_3Sto2S_lhcb7TeV, color3Sto2S, markerLHCb);
+	auto* statGraph_lhcb3Sto2S = StatGraph(title, nPoints_lhcb, rapidityBinning_lhcb7and8TeV, rapidDiff_3Sto2S_lhcb7TeV, errorRapidDiff_3Sto2S_lhcb7TeV, color3Sto2S, markerLHCb);
 
 	/// draw
 
@@ -169,8 +170,5 @@ void rapidityRatios() {
 	auto fit3Sto1S = getFitResult(statGraph_mid3Sto1S, statGraph_lhcb3Sto1S);
 	drawHeaderLegend(Form("%.3f #pm%.3f (%.1f / %d)", fit3Sto1S->Value(0), fit3Sto1S->ParError(0), fit3Sto1S->Chi2(), fit3Sto1S->Ndf()), xFit, y3Sto1S);
 
-	gPad->RedrawAxis();
-
-	canvas->SaveAs("figures/rapidity7TeV_CMS_LHCb.png", "RECREATE");
-	canvas->Close();
+	saveAs(canvas, "rapidity7TeV_CMS_LHCb");
 }
